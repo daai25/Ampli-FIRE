@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const clientId = process.env.ID;
-const clientSecret = process.env.SECRET;
+const clientId = 'a902ae06003d4a089d382c4c0b525a13';
+const clientSecret = 'bc7750f708a5460bba967d6ac3405b01';
 /* curl -X POST "https://accounts.spotify.com/api/token" \
      -H "Content-Type: application/x-www-form-urlencoded" \          
      -d "grant_type=client_credentials&client_id=ID&clientSecret=SECRET"
@@ -39,7 +39,6 @@ async function main(){
       const token = await getToken();
         console.log(token);
         const data = await getData("https://api.spotify.com/v1/playlists/5ezzEAFhsLp9ZYvCIrDJIu?si=2766faf4eb5d4abd", token);
-	const data = await getData("https://api.spotify.com/
         console.log(data.name);
         console.log("=========================");
         console.log(data.owner.id);
