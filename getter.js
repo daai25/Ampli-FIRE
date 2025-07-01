@@ -39,6 +39,7 @@ async function main(){
       const token = await getToken();
         console.log(token);
         const data = await getData("https://api.spotify.com/v1/playlists/5ezzEAFhsLp9ZYvCIrDJIu?si=2766faf4eb5d4abd", token);
+	const data = await getData("https://api.spotify.com/
         console.log(data.name);
         console.log("=========================");
         console.log(data.owner.id);
