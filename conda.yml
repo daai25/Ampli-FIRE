@@ -1,0 +1,17 @@
+name: sample
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bokeh
+  - jupyterlab
+  - pandas
+  - python=3.10
+  - scikit-learn
+  - scikit-plot
+  - seaborn
+  - pip
+  - pip:
+      - python-dotenv
+      - ydata-profiling

@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: build
+
+website:
+  title: "Sample Project"
+  search: true
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
+      - index.qmd
+      - project_charta.qmd
+      - data_report.qmd
+      - modelling_report.qmd
+      - evaluation.qmd
+
+bibliography: refs.bib
+csl: vancouver-brackets.csl
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+  
+  pdf:
+    documentclass: scrreprt
+    number-sections: true
+
+jupyter: python3
+
+execute:
+  freeze: auto
+
+editor:
+  render-on-save: true
