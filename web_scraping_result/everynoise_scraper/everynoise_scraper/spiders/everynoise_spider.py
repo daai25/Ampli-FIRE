@@ -41,18 +41,17 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         'ROBOTSTXT_OBEY': False,
     }
 
-    def parse(self, response):
-        #self.logger.info("Parsing response from %s", response.url)
-    
+    def parse(self, response):    
         genre_links = response.css("div.canvas a")
-        #self.logger.info("Found %d genre links", len(genre_links))
-
-        #if not genre_links:
-        #    self.logger.warning("No genres found. Check selectors or rendering.")
 
         for a in genre_links:
+            href = a.attrib["href"]                    
+            full_url = response.urljoin(href)
+
+            slug = href.replace("engenremap-", "").replace(".html", "")
+            
             yield {
-                "name": a.css("::text").get(),
+                "genre" : slug,
                 "link": response.urljoin(a.attrib["href"]),
             }
 
