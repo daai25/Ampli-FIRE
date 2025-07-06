@@ -38,15 +38,14 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         logger.info(f"*********************** Found {len(genre_links)} relative links ***********************")
        
         for link in genre_links[:3]:  
-            #genre_name = href.replace("everynoise1d-", "").replace(".html", "")
             full_url = link.get_attribute("href")
             song_names = self.get_songs_from_genre(link)
             logger.info(f"*********************** Found {len(song_names)} songs in genre: {full_url} ***********************")
             yield {
-                #"genre" : genre_name,
                 "link": full_url,
                 "songs": song_names  
             }
+            
         
         # song_names = self.get_songs_from_genre(genre_links[0])
         # logger.info(f"*********************** Found {len(song_names)} songs in the first genre ***********************")
