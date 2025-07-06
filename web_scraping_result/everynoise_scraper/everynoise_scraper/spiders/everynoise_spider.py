@@ -24,47 +24,43 @@ class EverynoiseSpiderSpider(scrapy.Spider):
     allowed_domains = ["everynoise.com"]
     start_urls = ["https://everynoise.com/everynoise1d.html"]
 
-    def parse(self, response):   
-        logger.info("*********************** Starting parse function ***********************")
-    
+    def parse(self, response):      
         # Launch headless Chrome
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
+        #options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         
         driver = webdriver.Chrome(service=ChromeService(), options=options)
         driver.get(response.url)
 
-        #relative_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr[1]/td[3]/a")
-        
         genre_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr/td[3]/a")
         logger.info(f"*********************** Found {len(genre_links)} relative links ***********************")
        
-    
-        for link in genre_links[:5]:  
-            logger.info(f"*********************** Processing genre link: {link} ***********************")             
+        for link in genre_links[:3]:  
             #genre_name = href.replace("everynoise1d-", "").replace(".html", "")
             full_url = link.get_attribute("href")
-            logger.info(f"*********************** Processing genre link: {full_url} ***********************")   
+            song_names = self.get_songs_from_genre(link)
+            logger.info(f"*********************** Found {len(song_names)} songs in genre: {full_url} ***********************")
             yield {
                 #"genre" : genre_name,
-                "link": full_url  
+                "link": full_url,
+                "songs": song_names  
             }
-            # logger.info(f"*********************** Start Function get_songs_from_genre(link) ***********************")
-            # song_list = self.get_songs_from_genre(href)
-            # logger.info(f"*********************** Found {len(song_list)} songs in genre {genre_name} at {full_url} ***********************")
-            
+        
+        # song_names = self.get_songs_from_genre(genre_links[0])
+        # logger.info(f"*********************** Found {len(song_names)} songs in the first genre ***********************")
+                  
+
+
         logger.info("*********************** Scraping complete ***********************")
         driver.quit()
-        
+
+
     def get_songs_from_genre(self, link):
-
-        logger.info(f"********************  Scraping songs from {link} ********************")
         driver = webdriver.Chrome()
-        driver.get(self.link)
-        logger.info(f"********************  Page loaded, switching to iframe")
-
+        driver.get(link.get_attribute("href"))
+        
         # Switch to iframe
         iframe = driver.find_element(By.XPATH, "//iframe[@id='spotify']")
         driver.switch_to.frame(iframe)
@@ -73,16 +69,11 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         # Find if 'Lush Life' appears anywhere in the iframe's HTML
         iframe_html = driver.page_source
         
-        logger.info(f"********************  Scraping song names from iframe")
         # Get all elements with the specified class and print their text
-        elements = driver.find_elements(By.CSS_SELECTOR, ".tracklist-name, .TracklistRow__track-name")
-
-        logger.info(f"********************  Found {len(elements)} song elements in iframe")
-        song_names = []
-        for el in elements: 
-            song_names.append(el.text)
-
-        logger.info(f"********************  Found {len(song_names)} songs in iframe")
+        elements = driver.find_elements(By.CLASS_NAME, "TracklistRow_title__1RtS6")
+        song_names = [el.text for el in elements]
+        # for el in elements:
+        #     logger.info(el.text)
         
         # Switch back to main content
         driver.switch_to.default_content()
@@ -90,6 +81,8 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         driver.quit()
 
         return song_names
+    
+
 
         
 
