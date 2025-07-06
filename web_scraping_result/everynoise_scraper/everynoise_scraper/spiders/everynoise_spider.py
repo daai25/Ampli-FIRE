@@ -39,17 +39,17 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         logger.info(f"*********************** Navigated to {response.url} ***********************")
         logger.info("*********************** Page loaded, waiting for genre links to appear ***********************")
         
-        relative_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr[1]/td[3]/a")
-        logger.info(f"*********************** Found {len(relative_links)} relative links ***********************")
+        #relative_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr[1]/td[3]/a")
         
+        genre_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr/td[3]/a")
+        logger.info(f"*********************** Found {len(genre_links)} relative links ***********************")
+        logger.info(f"*********************** first genre link: {genre_links[3500].get_attribute('href')} ***********************")
         # Extract href attributes
-        genre_links = [a.get_attribute("href") for a in relative_links]
-        
+        #genre_links = [a.get_attribute("href") for a in relative_links]
         
         
         logger.info("*********************** Scraping complete ***********************")
         driver.quit()
-        logger.info(f"*********************** Found {len(genre_links)} genre links ***********************")
         
         # for href in genre_links[:1]:               
         #     full_url = response.urljoin(href)
