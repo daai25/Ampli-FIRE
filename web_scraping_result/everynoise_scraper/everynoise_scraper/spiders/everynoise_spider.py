@@ -32,39 +32,32 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
-        logger.info("*********************** Launching headless Chrome ***********************")
         
         driver = webdriver.Chrome(service=ChromeService(), options=options)
         driver.get(response.url)
-        logger.info(f"*********************** Navigated to {response.url} ***********************")
-        logger.info("*********************** Page loaded, waiting for genre links to appear ***********************")
-        
+
         #relative_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr[1]/td[3]/a")
         
         genre_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr/td[3]/a")
         logger.info(f"*********************** Found {len(genre_links)} relative links ***********************")
-        logger.info(f"*********************** first genre link: {genre_links[3500].get_attribute('href')} ***********************")
-        # Extract href attributes
-        #genre_links = [a.get_attribute("href") for a in relative_links]
-        
-        
+       
+    
+        for link in genre_links[:5]:  
+            logger.info(f"*********************** Processing genre link: {link} ***********************")             
+            #genre_name = href.replace("everynoise1d-", "").replace(".html", "")
+            full_url = link.get_attribute("href")
+            logger.info(f"*********************** Processing genre link: {full_url} ***********************")   
+            yield {
+                #"genre" : genre_name,
+                "link": full_url  
+            }
+            # logger.info(f"*********************** Start Function get_songs_from_genre(link) ***********************")
+            # song_list = self.get_songs_from_genre(href)
+            # logger.info(f"*********************** Found {len(song_list)} songs in genre {genre_name} at {full_url} ***********************")
+            
         logger.info("*********************** Scraping complete ***********************")
         driver.quit()
         
-        # for href in genre_links[:1]:               
-        #     full_url = response.urljoin(href)
-        #     logger.info(f"*********************** Found genre link: {full_url} ***********************")
-        #     genre_name = href.replace("everynoise1d-", "").replace(".html", "")
-
-        #     yield {
-        #         "genre" : genre_name,
-        #         "link": full_url    
-        #     }
-        #     logger.info(f"*********************** Start Function get_songs_from_genre(link) ***********************")
-        #     song_list = self.get_songs_from_genre(full_url)
-        #     logger.info(f"*********************** Found {len(song_list)} songs in genre {genre_name} at {full_url} ***********************")
-            
-
     def get_songs_from_genre(self, link):
 
         logger.info(f"********************  Scraping songs from {link} ********************")
