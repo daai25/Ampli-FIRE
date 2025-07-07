@@ -35,27 +35,23 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         driver.get(response.url)
 
         genre_links = driver.find_elements(by=By.XPATH, value="/html/body/table/tbody/tr/td[3]/a")
-        logger.info(f"*********************** Found {len(genre_links)} relative links ***********************")
-       
+
         for link in genre_links[:3]:  
-            full_url = link.get_attribute("href")
-            song_names = self.get_songs_from_genre(link)
-            logger.info(f"*********************** Found {len(song_names)} songs in genre: {full_url} ***********************")
-            yield {
-                "link": full_url,
-                "songs": song_names  
-            }
-            
+            logger.info(f"Processing genre link: {link}")
+            #full_url = link.get_attribute("href")
+            song_names, artist_names = self.get_songs_from_genre(link)
+     
+            for song_name, artist_name in zip(song_names, artist_names):
+                yield {
+                    #"link": full_url,
+                    "genre": link.text.strip(),
+                    "song name": song_name,
+                    "artist name": artist_name
+                }
         
-        # song_names = self.get_songs_from_genre(genre_links[0])
-        # logger.info(f"*********************** Found {len(song_names)} songs in the first genre ***********************")
-                  
-
-
-        logger.info("*********************** Scraping complete ***********************")
         driver.quit()
 
-
+        
     def get_songs_from_genre(self, link):
         driver = webdriver.Chrome()
         driver.get(link.get_attribute("href"))
@@ -63,23 +59,20 @@ class EverynoiseSpiderSpider(scrapy.Spider):
         # Switch to iframe
         iframe = driver.find_element(By.XPATH, "//iframe[@id='spotify']")
         driver.switch_to.frame(iframe)
-        
-        # Scrape data inside iframe
-        # Find if 'Lush Life' appears anywhere in the iframe's HTML
-        iframe_html = driver.page_source
-        
+       
         # Get all elements with the specified class and print their text
         elements = driver.find_elements(By.CLASS_NAME, "TracklistRow_title__1RtS6")
         song_names = [el.text for el in elements]
-        # for el in elements:
-        #     logger.info(el.text)
-        
+
+        elements = driver.find_elements(By.CLASS_NAME, "TracklistRow_subtitle___DhJK")
+        artist_names = [el.text for el in elements]
+
         # Switch back to main content
         driver.switch_to.default_content()
         
         driver.quit()
 
-        return song_names
+        return song_names, artist_names
     
 
 
