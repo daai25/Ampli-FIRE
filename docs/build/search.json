@@ -1,0 +1,182 @@
+[
+  {
+    "objectID": "evaluation.html",
+    "href": "evaluation.html",
+    "title": "Evaluation",
+    "section": "",
+    "text": "Evaluation\nThis protocol summarises the decisions from the evaluation of the data mining phase, which are made, for example, in a workshop together with the client and other stakeholders.\nDecide:\n\nDo results meet user needs?\nContinuation of the project yes/no\nPlanning of the deployment\nCarry out an additional data mining iteration\n\nAcquire more or different data\nImprovements in the modelling\nAddress governance issues\nor ethical considerations\n…\n\n\nAny presentation material created for such a workshop should also be stored in the docs folder.\nIt is important to list who was involved in the decisions and when they were made.\nThe structure and level of detail of this protocol should be tailored to the customs of the relevant organisation and the requirements of the decision-makers. It might include already a high level description of the envisioned product to be deployed.",
+    "crumbs": [
+      "Evaluation"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "About This Documentation",
+    "section": "",
+    "text": "The Data Science Process [1]\n\n\nThis is an example on how to incorporate executable Python code and show a figure output:\n\n\nCode\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Generate sample data\nx = np.linspace(0, 2*np.pi, 100)\ny = np.sin(x)\n\n# Create the plot\nfig, ax = plt.subplots(figsize=(8, 5))\n\nax.plot(x, y, color='blue', linewidth=2)\n\nax.set_xlabel('x')\nax.set_ylabel('y')\nax.set_title('Plot title')\n\nax.spines['top'].set_visible(False)\nax.spines['right'].set_visible(False)\n\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: A simple demonstration of executable Python code producing a figure object.\n\n\n\n\n\nThen the figure can be referenced with Figure 1.\n\n\n\n\nReferences\n\n1. Doemer D, Kempf M. Is it ops that make data science scientific? Archives of Data Science, Series A (Online First). 2022;8(2):12 S.",
+    "crumbs": [
+      "About This Documentation"
+    ]
+  },
+  {
+    "objectID": "project_charta.html",
+    "href": "project_charta.html",
+    "title": "Project Charta",
+    "section": "",
+    "text": "Formulate the problem and important information about the domain and/or business area in which the product is to be developed: What exactly is the problem and the expected benefit of the project? Why should we undertake this effort?\nThis includes a summary of the most important findings from the user analysis: relevant segments and user groups. Describe the problems and needs of the users of the product to be developed.\nStakeholders: List the people involved in and affected by the project. Describe their goals and relationships with each other. Visualisation in the form of a stakeholder map can provide a quick overview.\nYou can reference more detailed analyses such as individual “personas” or interviews in separate documents in the appendix.\n\n\n\nDescribe the available resources (personnel, material, (software) tools, infrastructure, etc.) and time as well as restrictions and constraints. Possible risks that may arise during the project are also identified.\n\n\n\nWhen is the project successful from a client/stakeholder perspective: Formulate (qualitative) objectives, wherever possible, corresponding key metrics and the target values to be achieved within the project.\nIt is also often helpful to specify what is explicitly excluded from the project objectives (out of scope).\n\n\n\nMap the problem definition, datasets to be used and primary objective onto a data mining task, e.g.:\n\nClassification\nRegression\nClustering\nOutlier Detection\nAssociation rule learning (market basket analysis)\nRecommender System\nVisualisation\n…\n\nAlong with the definition of the actual technical problem (category) to be solved, the project goals must be mapped onto quitable quantitative metrics and corresponding target values. For example, for a classification task one might specify an F-score of 0.9 as a minimal requirement for an acceptable solution.\nSuch a requirement should be aligned with the overall project goals and/or literature references or justified by other references, respectively.\n\n\n\nDivide the project into individual phases, describe them briefly and draw up a preliminary timetable, e.g. as a Gantt chart:\n\n\n\n\n\n\nFigure 1: Project Plan\n\n\n\nSee Mermaid syntax for Gantt charts. It might not be displayed correctly in Safari → use Chrome. Live editor with export functionality\ngantt\n    title A Gantt Diagram\n    dateFormat YYYY-MM-DD\n    tickInterval 5day\n    section Project Understanding\n        Define problem,     :a1, 2024-07-01, 1d\n        Determine project goals     :a2, 2024-07-01, 1d\n        List available resources     :a3, 2024-07-02, 1d\n        Set data mining goals    :a4, 2024-07-03, 1d\n        Create project plan    :a5, 2024-07-03, 1d\n        Project checkpoint: milestone, m1, 2024-07-04, 4m\n    section Data Acquisition and Exploration\n        Acquire data :a6, 2024-07-02, 2d\n        Exploratory data analysis   :a7, 2024-07-03, 2d\n        \n    section Modelling\n        Create initial model   :a8, 2024-07-09, 1d\n        Additional feature engineering :a9, 2024-07-10, 1d\n        Prepare modelling report :a10, 2024-07-10, 2h\n    section Evaluation\n        Prepare presentation :a10, 2024-07-10, 2h\n        Project presentation : milestone, m2, 2024-07-11, 4m\n\n\n\nList the people involved in the development work here with their role titles, tasks and contact details",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#problem-definition",
+    "href": "project_charta.html#problem-definition",
+    "title": "Project Charta",
+    "section": "",
+    "text": "Formulate the problem and important information about the domain and/or business area in which the product is to be developed: What exactly is the problem and the expected benefit of the project? Why should we undertake this effort?\nThis includes a summary of the most important findings from the user analysis: relevant segments and user groups. Describe the problems and needs of the users of the product to be developed.\nStakeholders: List the people involved in and affected by the project. Describe their goals and relationships with each other. Visualisation in the form of a stakeholder map can provide a quick overview.\nYou can reference more detailed analyses such as individual “personas” or interviews in separate documents in the appendix.",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#situation-assessment",
+    "href": "project_charta.html#situation-assessment",
+    "title": "Project Charta",
+    "section": "",
+    "text": "Describe the available resources (personnel, material, (software) tools, infrastructure, etc.) and time as well as restrictions and constraints. Possible risks that may arise during the project are also identified.",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#project-goals-and-success-criteria",
+    "href": "project_charta.html#project-goals-and-success-criteria",
+    "title": "Project Charta",
+    "section": "",
+    "text": "When is the project successful from a client/stakeholder perspective: Formulate (qualitative) objectives, wherever possible, corresponding key metrics and the target values to be achieved within the project.\nIt is also often helpful to specify what is explicitly excluded from the project objectives (out of scope).",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#data-mining-goals",
+    "href": "project_charta.html#data-mining-goals",
+    "title": "Project Charta",
+    "section": "",
+    "text": "Map the problem definition, datasets to be used and primary objective onto a data mining task, e.g.:\n\nClassification\nRegression\nClustering\nOutlier Detection\nAssociation rule learning (market basket analysis)\nRecommender System\nVisualisation\n…\n\nAlong with the definition of the actual technical problem (category) to be solved, the project goals must be mapped onto quitable quantitative metrics and corresponding target values. For example, for a classification task one might specify an F-score of 0.9 as a minimal requirement for an acceptable solution.\nSuch a requirement should be aligned with the overall project goals and/or literature references or justified by other references, respectively.",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#project-plan",
+    "href": "project_charta.html#project-plan",
+    "title": "Project Charta",
+    "section": "",
+    "text": "Divide the project into individual phases, describe them briefly and draw up a preliminary timetable, e.g. as a Gantt chart:\n\n\n\n\n\n\nFigure 1: Project Plan\n\n\n\nSee Mermaid syntax for Gantt charts. It might not be displayed correctly in Safari → use Chrome. Live editor with export functionality\ngantt\n    title A Gantt Diagram\n    dateFormat YYYY-MM-DD\n    tickInterval 5day\n    section Project Understanding\n        Define problem,     :a1, 2024-07-01, 1d\n        Determine project goals     :a2, 2024-07-01, 1d\n        List available resources     :a3, 2024-07-02, 1d\n        Set data mining goals    :a4, 2024-07-03, 1d\n        Create project plan    :a5, 2024-07-03, 1d\n        Project checkpoint: milestone, m1, 2024-07-04, 4m\n    section Data Acquisition and Exploration\n        Acquire data :a6, 2024-07-02, 2d\n        Exploratory data analysis   :a7, 2024-07-03, 2d\n        \n    section Modelling\n        Create initial model   :a8, 2024-07-09, 1d\n        Additional feature engineering :a9, 2024-07-10, 1d\n        Prepare modelling report :a10, 2024-07-10, 2h\n    section Evaluation\n        Prepare presentation :a10, 2024-07-10, 2h\n        Project presentation : milestone, m2, 2024-07-11, 4m",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "project_charta.html#roles-and-contact-details",
+    "href": "project_charta.html#roles-and-contact-details",
+    "title": "Project Charta",
+    "section": "",
+    "text": "List the people involved in the development work here with their role titles, tasks and contact details",
+    "crumbs": [
+      "Project Charta"
+    ]
+  },
+  {
+    "objectID": "data_report.html",
+    "href": "data_report.html",
+    "title": "Data Report",
+    "section": "",
+    "text": "All information on the data used in the project is compiled in the data report in order to ensure the traceability and reproducibility of the results and to enable a systematic expansion of the database.\nTypically, in the exploratory analysis of the acquired raw data, quality and other issues are identified, which require pre-processing, merging of individual datasets and feature engineering into processed datasets. Therefore, this template provides a separate section for the processed data, which then serves as a starting point for the modelling activities. This needs to be adapted to the specific project requirements.\n\n\n\n\n\n\n\n\n\n\n\n\nName\nQuelle\nStorage location\n\n\n\n\nDataset 1\nName/short description of the data source\nLink and/or short description of the location where the data is stored, e.g. accessible to the team\n\n\nDataset 2\n…\n…\n\n\n\n\n\n\n\nDescription of what information the dataset contains\nDetails of the data source/provider\nInformation on data procurement: description and possibly references to resources (download scripts, tools, online services, …). Any new team member should be able to acquire the data indepentendently following these instructions.\nLegal aspects of data use, licences, etc.\nData governance aspects: Categorisation of the data based on internal business requirements, e.g. public, business-relevant, personal\nIf applicable: categorisation into dependent (target variable, regressor) and independent (regressor) variables\n…\n\n\n\nThe data catalogue basically represents an extended schema of a relational database.\n\n\n\n\n\n\n\n\n\n\nColumn index\nColumn name\nDatatype\nValues (Range, validation rules)\nShort description\n\n\n\n\n1\n\n\n\n\n\n\n2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nQuelle\nStorage location\n\n\n\n\nProcessed Dataset 1\nName/short description of the data source\nLink and/or short description of the location where the data is stored, e.g. accessible to the team\n\n\nProcessed Dataset 2\n…\n…\n\n\n\n\n\n\n\nDescription of what information the dataset contains\nDetails and reasons for the processing steps -&gt; Traceability and ensuring reproducibility\nHow can the data be accessed? Description, scripts, tools, …\n…\n\n\n\n\n\n\n\n\n\n\n…",
+    "crumbs": [
+      "Data Report"
+    ]
+  },
+  {
+    "objectID": "data_report.html#raw-data",
+    "href": "data_report.html#raw-data",
+    "title": "Data Report",
+    "section": "",
+    "text": "Name\nQuelle\nStorage location\n\n\n\n\nDataset 1\nName/short description of the data source\nLink and/or short description of the location where the data is stored, e.g. accessible to the team\n\n\nDataset 2\n…\n…\n\n\n\n\n\n\n\nDescription of what information the dataset contains\nDetails of the data source/provider\nInformation on data procurement: description and possibly references to resources (download scripts, tools, online services, …). Any new team member should be able to acquire the data indepentendently following these instructions.\nLegal aspects of data use, licences, etc.\nData governance aspects: Categorisation of the data based on internal business requirements, e.g. public, business-relevant, personal\nIf applicable: categorisation into dependent (target variable, regressor) and independent (regressor) variables\n…\n\n\n\nThe data catalogue basically represents an extended schema of a relational database.\n\n\n\n\n\n\n\n\n\n\nColumn index\nColumn name\nDatatype\nValues (Range, validation rules)\nShort description\n\n\n\n\n1\n\n\n\n\n\n\n2",
+    "crumbs": [
+      "Data Report"
+    ]
+  },
+  {
+    "objectID": "data_report.html#processed-data",
+    "href": "data_report.html#processed-data",
+    "title": "Data Report",
+    "section": "",
+    "text": "Name\nQuelle\nStorage location\n\n\n\n\nProcessed Dataset 1\nName/short description of the data source\nLink and/or short description of the location where the data is stored, e.g. accessible to the team\n\n\nProcessed Dataset 2\n…\n…\n\n\n\n\n\n\n\nDescription of what information the dataset contains\nDetails and reasons for the processing steps -&gt; Traceability and ensuring reproducibility\nHow can the data be accessed? Description, scripts, tools, …\n…\n\n\n\n\n\n\n\n\n\n\n…",
+    "crumbs": [
+      "Data Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html",
+    "href": "modelling_report.html",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "The report should summarise the details of the modelling activities, e.g. machine learning experiments.\n\n\n\nAim of the modelling - consistent with Data Mining Goals in the project charta\nData set(s) and/or feature set used (references to the data report)\nDescription of the independent variables and (if applicable) the target variable\nType of model used or developed\n\n\n\n\nOverview of the models used and/or implemented and their configurations\n\nDetailed description of the model used (e.g. literature references, specification of the software library, exact module, version or other implementation details etc.)\nGraphical representation of the modelling pipeline\nIf applicable: link to the code of the modelling pipeline, version information in code repository, configuration files\nIf possible, links to the artefacts of the executed modelling pipeline (training experiment)\nLink to the literature in which the model/method is described\nHyperparameters\n\n\n\n\nKey figures dependent on the model and modelling objective\n\nRMSD, ROC/Lift-Charts, AUC, Confusion Matrix, Accuracy, Precision, Recall\nCoherence, Perplexity, …\nIf applicable: analyses/plots of (hyper)parameter screenings\n\n\n\n\n\nIf applicable: Results from the application of “explanatory models”\nWere the modelling objectives achieved?\nThe findings resulting from the modelling phase: can the project objective be achieved with the results from the modelling phase?\nHow can the findings be used? Are there any limitations?\n\n\n\n\n\nConclusions of the key findings from the modelling phase\nDiscussion about limitations\nProposal for extensions and further work\nProposal for the deployment of the generated insights/model",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html#initial-situation",
+    "href": "modelling_report.html#initial-situation",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "Aim of the modelling - consistent with Data Mining Goals in the project charta\nData set(s) and/or feature set used (references to the data report)\nDescription of the independent variables and (if applicable) the target variable\nType of model used or developed",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html#model-descriptions",
+    "href": "modelling_report.html#model-descriptions",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "Overview of the models used and/or implemented and their configurations\n\nDetailed description of the model used (e.g. literature references, specification of the software library, exact module, version or other implementation details etc.)\nGraphical representation of the modelling pipeline\nIf applicable: link to the code of the modelling pipeline, version information in code repository, configuration files\nIf possible, links to the artefacts of the executed modelling pipeline (training experiment)\nLink to the literature in which the model/method is described\nHyperparameters",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html#results",
+    "href": "modelling_report.html#results",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "Key figures dependent on the model and modelling objective\n\nRMSD, ROC/Lift-Charts, AUC, Confusion Matrix, Accuracy, Precision, Recall\nCoherence, Perplexity, …\nIf applicable: analyses/plots of (hyper)parameter screenings",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html#model-interpretation",
+    "href": "modelling_report.html#model-interpretation",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "If applicable: Results from the application of “explanatory models”\nWere the modelling objectives achieved?\nThe findings resulting from the modelling phase: can the project objective be achieved with the results from the modelling phase?\nHow can the findings be used? Are there any limitations?",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  },
+  {
+    "objectID": "modelling_report.html#conclusions-and-next-steps",
+    "href": "modelling_report.html#conclusions-and-next-steps",
+    "title": "Modelling Report",
+    "section": "",
+    "text": "Conclusions of the key findings from the modelling phase\nDiscussion about limitations\nProposal for extensions and further work\nProposal for the deployment of the generated insights/model",
+    "crumbs": [
+      "Modelling Report"
+    ]
+  }
+]
