@@ -1,0 +1,12 @@
+{
+  "hash": "cad2aa41490e70520f820f8298153a92",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"About This Documentation\"\n---\n\n![The Data Science Process @DoemerKempf2022_1000150238](pics/dsprocess.png)\n\n\nThis is an example on how to incorporate executable Python code and show a figure output:\n\n::: {#cell-fig-demo .cell execution_count=1}\n``` {.python .cell-code code-fold=\"true\"}\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Generate sample data\nx = np.linspace(0, 2*np.pi, 100)\ny = np.sin(x)\n\n# Create the plot\nfig, ax = plt.subplots(figsize=(8, 5))\n\nax.plot(x, y, color='blue', linewidth=2)\n\nax.set_xlabel('x')\nax.set_ylabel('y')\nax.set_title('Plot title')\n\nax.spines['top'].set_visible(False)\nax.spines['right'].set_visible(False)\n\nplt.show()\n```\n\n::: {.cell-output .cell-output-display}\n![A simple demonstration of executable Python code producing a figure object.](index_files/figure-html/fig-demo-output-1.png){#fig-demo width=683 height=449}\n:::\n:::\n\n\nThen the figure can be referenced with @fig-demo.\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
