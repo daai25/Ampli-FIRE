@@ -1,0 +1,52 @@
+[    
+    {
+        "genre": "pop",
+        "song_name": "Something Just Like This",
+        "artist": "The Chainsmokers, Coldplay"
+    },
+    {
+        "genre": "pop",
+        "song_name": "Habits (Stay High)",
+        "artist": "Tove Lo"
+    },
+    {
+        "genre": "pop",
+        "song_name": "Replay",
+        "artist": "Zendaya"
+    },
+    {
+        "genre": "pop",
+        "song_name": "Strip That Down (feat. Quavo)",
+        "artist": "Liam Payne, Quavo"
+    },
+    {
+        "genre": "pop",
+        "song_name": "we can't be friends (wait for your love)",
+        "artist": "Ariana Grande"
+    },
+        {
+        "genre": "rock",
+        "song_name": "Blitzkrieg Bop - 2016 Remaster",
+        "artist": "Ramones"
+    },
+    {
+        "genre": "rock",
+        "song_name": "Can't Stop",
+        "artist": "Red Hot Chili Peppers"
+    },
+        {
+        "genre": "trap latino",
+        "song_name": "La Paso Cabr\u00f3n (feat. Gigolo y La Exce, Falsetto y Sammy, Mike Duran & Baby Angel)",
+        "artist": "E\nTrap Capos, Noriel, Gigolo Y La Exce, Sammy & Falsetto, Mike Duran, Baby Angel"
+    },
+    {
+        "genre": "trap latino",
+        "song_name": "La Jumpa",
+        "artist": "E\nArc\u00e1ngel, Bad Bunny"
+    },
+    {
+        "genre": "trap latino",
+        "song_name": "BAD BOY",
+        "artist": "E\nChris Jedi, Gaby Music, Dei V, Anuel AA, Ozuna"
+    }
+]
