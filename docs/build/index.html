@@ -135,7 +135,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About This Documentation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -221,60 +221,24 @@ div.csl-indent {
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://api.deepai.org/job-view-file/59f6c64d-5771-456f-956d-6e671034603e/outputs/output.jpg" class="img-fluid figure-img"></p>
+<img src="ampli-FIRE.png" alt="logo"
+	style="display:block; margin: 0 auto; height: 300px; width: 400px;">
 </figure>
 </div>
 <h1 class="title">About</h1>
 <p>This project has led us through many ups and downs. For starters, when the topic was first suggested to us it was nothing more than a concept; an intellectually stimulating idea with no guidelines. We spent much of the first few days brainstorming the specifics of what we wanted to do and trying to map out the procedures we would need to follow in order to achieve them. Once we had established what we wanted to do, we moved onto the task of gathering data.</p>
 <h2>Data Acquisition & Cleaning</h2>
-<p>With nearly an infinite number of songs, gathering the data we needed was a huge undertaking. Not only did we first need to find sites to scrape, but we also had to ensure that they had the information that we needed for every song possible. The parameters of the project allowed us to narrow our focus to only sites that categorized their music based on genre and artist, as these are two of the main attributes needed for our recommendation services. This is where we came across our next obstacles: website security. Many of the music streaming services that we had hoped to use had many safeguards that prevented us from using Scrapy in the way that we had been taught. Many hours were sacrificed trying to get around these obstacles. Fortunately, with the help of Professor Ira Woodring of Grand Valley State University we were able to find a site that had an extensive list of songs with all of the parameters we would need for the project. That site is <a href="https://everynoise.com/everynoise1d.html">everynoise.com</a>.</p>
-<br>
-<p>This is an example on how to incorporate executable Python code and show a figure output:</p>
-<div id="cell-fig-demo" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">100</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(x)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>ax.plot(x, y, color<span class="op">=</span><span class="st">'blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'x'</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'y'</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Plot title'</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<div id="fig-demo" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: A simple demonstration of executable Python code producing a figure object.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Then the figure can be referenced with <a href="#fig-demo" class="quarto-xref">Figure&nbsp;1</a>.</p>
-
+<p>With nearly an infinite number of songs, gathering the data we needed was a huge undertaking. Not only did we first need to find sites to scrape, but we also had to ensure that they had the information that we needed for every song possible. The parameters of the project allowed us to narrow our focus to only sites that categorized their music based on genre and artist, as these are two of the main attributes needed for our recommendation services. This is where we came across our next obstacles: website security. Many of the music streaming services that we had hoped to use had many safeguards that prevented us from using Scrapy in the way that we had been taught. Many hours were sacrificed trying to get around these obstacles. Fortunately, with the help of Professor Ira Woodring of Grand Valley State University we were able to find a site that had an extensive list of songs with all of the parameters we would need for the project. That site is <a href="https://everynoise.com/everynoise1d.html">everynoise.com</a>. </p>
+<p>In the end, our team was able to scrape all 584,921 songs from the 6,291 genres provided by the website, but this was not quite enough. See, the problem with Everynoise is that the songs it gave us could not be downloaded without violating copyright laws. This is a problem as we would have to rely on those audios in order to create the fingerprints needed in the deep learning section of the project. So, after a lot of trial and error, we settled for <a href="https://www.jamendo.com/start">Jamendo</a>, which offered us a sizeable variety of open source songs.</p>
+<h2>Modelling</h2>
+<p></p>
 
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-DoemerKempf2022_1000150238" class="csl-entry" role="listitem">
-<div class="csl-left-margin">1. </div><div class="csl-right-inline">Doemer D, Kempf M. <a href="https://doi.org/10.5445/IR/1000150238">Is it ops that make data science scientific?</a> Archives of Data Science, Series A (Online First). 2022;8(2):12 S. </div>
-</div>
+<!--<div class="csl-left-margin">1. </div><div class="csl-right-inline">Doemer D, Kempf M. <a href="https://doi.org/10.5445/IR/1000150238">Is it ops that make data science scientific?</a> Archives of Data Science, Series A (Online First). 2022;8(2):12 S. </div>
+</div> -->
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
