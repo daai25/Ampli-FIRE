@@ -29,7 +29,10 @@ cur.execute("""
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         artist TEXT NOT NULL,
-        genre TEXT
+        genre TEXT,
+        bert_title FLOAT8[],
+        bert_artist FLOAT8[],
+        bert_genre FLOAT8[]    
     )
 """)
 conn.commit()
@@ -43,27 +46,29 @@ for song in songs:
     artist = song["artist"]
     genre = song["genre"]
 
-    #print(f"Processing song: {title} - {artist} - {genre}")
+    bert_title = model.encode(title).tolist()  # 384-dim List
+    bert_artist = model.encode(artist).tolist()  # 384-dim List
+    bert_genre = model.encode(genre).tolist()  # 384-dim List
 
-    #input_text = f"{artist} - {title}"
-    #embedding = model.encode(input_text).tolist()  # 384-dim List
+    #print(f"bert_title: {bert_title[:1]}...")  # Print first 5 dimensions for brevity
+    #print(f"number of dimensions: {len(bert_title)} ")
 
     cur.execute(
         """
-        INSERT INTO songs (title, artist, genre)
-        VALUES (%s, %s, %s)
+        INSERT INTO songs (title, artist, genre, bert_title, bert_artist, bert_genre)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
-        (title, artist, genre)
+        (title, artist, genre, bert_title, bert_artist, bert_genre)
     )
 
 
-#cur.execute("SELECT * FROM songs")
+# cur.execute("SELECT * FROM songs")
 
-#rows = cur.fetchall()
+# rows = cur.fetchall()
 
-
-
-
+# for row in rows:
+#     print(f"BERT Title: {row[4][:5]}...")  # Print first 5 dimensions for brevity
+#     print(f"number of dimensions: {len(row[4])} ") 
 
 # ✅ Commit & Verbindung schließen nach dem Loop
 conn.commit()
