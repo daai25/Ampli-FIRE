@@ -127,13 +127,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelling_report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Modelling Report</span></a>
+ <span class="menu-text">X Modelling Report</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Evaluation</span></a>
+ <span class="menu-text">X Evaluation</span></a>
   </div>
 </li>
     </ul>
@@ -194,7 +194,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>Everynoise</td>
 <td>This dataset consists of all of the data that we had scraped from <a href="https://everynoise.com/everynoise1d.html">everynoise.com</a>.</td>
-<td>..</td>
+<td>Found within the 'music_genre_everynoice.json' file, within the 'enaoscraper' directory.</td>
 </tr>
 <tr class="even">
 <td>Jamendo</td>
@@ -207,12 +207,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="details-dataset-1" class="level3">
 <h3>Details Everynoise</h3>
 <ul>
-<li>Provided by everynoise.com</li>
-<li>Scraped by using Scrapy</li>
+<li>Provided by everynoise.com.</li>
+<li>Scraped by using Scrapy and Selenium.</li>
 </ul>
-<ul>
+</section>
+<section id="details-dataset-2" class="level3">
 <h3>Details Jamendo</h3>
-<li>Provided by Jamendo.com</li>
+<ul>
+<li>Provided by Jamendo.com.</li>
 <li>Created through the process of combining two dictionaries:</li>
 <h4>1. A dataset containing information about songs.</h4>
 <img src="raw.meta.screenshot.png" alt="jamendo-raw.meta"
@@ -236,47 +238,26 @@ ul.task-list li input[type="checkbox"] {
 </colgroup>
 <thead>
 <tr class="header">
-<th>Name</th>
-<th>Quelle</th>
+<th>Dataset</th>
+<th>Description</th>
 <th>Storage location</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Processed Dataset 1</td>
-<td>Name/short description of the data source</td>
-<td>Link and/or short description of the location where the data is stored, e.g.&nbsp;accessible to the team</td>
-</tr>
-<tr class="even">
-<td>Processed Dataset 2</td>
-<td>…</td>
-<td>…</td>
+<td>Processed Everynoise</td>
+<td>Completely cleaned and combined data.</td>
+<td>music_dump.json</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="details-processed-dataset-1" class="level3">
-<h3 class="anchored" data-anchor-id="details-processed-dataset-1">Details Processed Dataset 1</h3>
-<ul>
-<li>Description of what information the dataset contains</li>
-<li>Details and reasons for the processing steps -&gt; Traceability and ensuring reproducibility</li>
-<li>How can the data be accessed? Description, scripts, tools, …</li>
-<li>…</li>
-</ul>
-<section id="data-catalogue-1" class="level4">
-<h4 class="anchored" data-anchor-id="data-catalogue-1">Data Catalogue</h4>
 </section>
-<section id="if-applicable-entity-relationship-diagram-1" class="level4">
-<h4 class="anchored" data-anchor-id="if-applicable-entity-relationship-diagram-1">If applicable: Entity Relationship Diagram</h4>
-</section>
-</section>
-<section id="details-processed-dataset-2" class="level3">
-<h3 class="anchored" data-anchor-id="details-processed-dataset-2">Details Processed Dataset 2</h3>
-<p>…</p>
-
-
-</section>
-</section>
+<section>
+<h1>Database</h1>
+<p></p>
+<img src="ampli-FIRE_db.jpg" alt="db_image"
+        style="display:block; margin: 0 auto; height: 300px; width: 100%;">
 </section>
 
 </main> <!-- /main -->
