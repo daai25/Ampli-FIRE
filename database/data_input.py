@@ -18,7 +18,7 @@ DB_CONFIG = {
 }
 
 #insert file_path to the file you want to extract the songs list from
-file_path = "your_input_file.json"  # or "your_input_file.csv"
+file_path = "web_scraping_result\everynoise_scraper\everynoise_scraper\music_dump.json"  # or "your_input_file.csv"
 
 #extract the objects from the CSV file and put it in a list
 def load_songs_from_csv(csv_path):
@@ -26,7 +26,7 @@ def load_songs_from_csv(csv_path):
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            raw_genres = row.get("genres", "").strip().lower()
+            raw_genres = row.get("genre", "").strip().lower()
 
             # Normalize genres: if genres is just a string, wrap it in a list
             if ";" in raw_genres:
@@ -37,8 +37,8 @@ def load_songs_from_csv(csv_path):
                 genres = []
 
             songs.append({
-                "song_name": row["song_name"].strip().lower(),
-                "artist_name": row["artist_name"].strip().lower(),
+                "song_name": row["song"].strip().lower(),
+                "artist_name": row["artist"].strip().lower(),
                 "genres": genres
             })
     return songs
@@ -49,7 +49,7 @@ def load_songs_from_json(json_path):
         raw_data = json.load(f)
         songs = []
         for song in raw_data:
-            genres = song.get("genres", [])
+            genres = song.get("genre", [])
 
             # Normalize: if genres is just a string, wrap it in a list
             if isinstance(genres, str):
@@ -60,8 +60,8 @@ def load_songs_from_json(json_path):
                 genres = []
 
             songs.append({
-                "song_name": song["song_name"].strip().lower(),
-                "artist_name": song["artist_name"].strip().lower(),
+                "song_name": song["song"].strip().lower(),
+                "artist_name": song["artist"].strip().lower(),
                 "genres": genres
             })
         return songs
@@ -85,7 +85,7 @@ def insert_songs(songs_data):
         cur.execute("""
             INSERT INTO songs (song_name, artist_name)
             VALUES (%s, %s)
-            ON CONFLICT (song_name, artist_name) DO NOTHING
+            ON CONFLICT DO NOTHING
             RETURNING song_id;
         """, (song_name, artist_name))
 
@@ -106,7 +106,7 @@ def insert_songs(songs_data):
             cur.execute("""
                 INSERT INTO genres (genre_name)
                 VALUES (%s)
-                ON CONFLICT (genre_name) DO NOTHING;
+                ON CONFLICT DO NOTHING;
             """, (genre_name,))
 
             # Get genre_id
@@ -125,9 +125,6 @@ def insert_songs(songs_data):
     cur.close()
     conn.close()
     print("All songs inserted successfully.")
-
-#run the inserting
-insert_songs(songs_data)
 
 # Load from CSV or JSON, if other filetypereturn an errormessage
 try:
