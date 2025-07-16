@@ -51,3 +51,5 @@ def delete_song(song_name, song_artist):
             cur.close()
         if conn:
             conn.close()
+
+delete_song("northern star", "steven dunston")
