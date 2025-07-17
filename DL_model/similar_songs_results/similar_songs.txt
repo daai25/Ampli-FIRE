@@ -1,0 +1,8 @@
+Query Song:
+(I_Don't_Even)_Need_Your_Love_-_Chalk_CIty_spectrogram.png
+
+Top 4 Visually Similar Songs:
+1. No_Handlebars_-_Wayne_Gordon_spectrogram.png (Similarity: 0.9779)
+2. Igor_Pumphonia_-_Happy_(Dub)_-_ChillRecords_spectrogram.png (Similarity: 0.9773)
+3. El_Cambio_Definitivo_ft._Dj_Rihla_-_Picatoste_spectrogram.png (Similarity: 0.9763)
+4. March_for_a_sad_banshee_-_mister.m_spectrogram.png (Similarity: 0.9752)

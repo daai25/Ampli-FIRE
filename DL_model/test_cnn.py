@@ -28,14 +28,6 @@ model = nn.Sequential(*list(model.children())[:-1])  # Remove final FC layer
 model = model.to(device)
 model.eval()
 
-# --- FUNCTION: Extract label from filename ---
-def get_label(filename):
-    base = os.path.basename(filename).lower()
-    if "_" in base:
-        return base.split("_")[0]  # e.g., 'dog_bark_001.png' → 'dog'
-    else:
-        return base.split("-")[0]  # fallback for 'dog-bark-001.png'
-
 # --- FUNCTION: Get feature embedding ---
 def get_embedding(image_path):
     img = Image.open(image_path).convert("RGB")
@@ -50,35 +42,30 @@ if len(image_paths) == 0:
     raise FileNotFoundError(f"❌ No PNG files found in {data_dir}")
 
 print(f"✅ Found {len(image_paths)} spectrograms.")
-labels = [get_label(p) for p in image_paths]
 
 # --- COMPUTE EMBEDDINGS ---
 print("🔄 Computing embeddings...")
 embeddings = np.array([get_embedding(p) for p in image_paths])
 
 # --- CHOOSE QUERY SPECTROGRAM ---
-query_filename = input("Enter spectrogram filename (e.g., siren_12.png): ").strip()
+query_filename = input("🎵 Enter spectrogram filename (e.g., SongA_spectrogram.png): ").strip()
 query_path = os.path.join(data_dir, query_filename)
 if not os.path.exists(query_path):
     raise FileNotFoundError(f"❌ Spectrogram '{query_filename}' not found in {data_dir}")
 
 query_embedding = get_embedding(query_path).reshape(1, -1)
-query_label = get_label(query_path)
 
-# --- FIND VISUALLY SIMILAR (ResNet embeddings) ---
+# --- FIND VISUALLY SIMILAR SONGS ---
 cos_sim = cosine_similarity(query_embedding, embeddings).flatten()
 visually_similar_indices = cos_sim.argsort()[::-1][1:5]  # Skip self at [0]
 visually_similar_paths = [image_paths[i] for i in visually_similar_indices]
-
-# --- FIND SEMANTICALLY SIMILAR (same label) ---
-semantically_similar_paths = [p for p, l in zip(image_paths, labels)
-                              if l == query_label and p != query_path][:4]
+visually_similar_scores = [cos_sim[i] for i in visually_similar_indices]
 
 # --- SAVE RESULTS ---
-def save_similar_spectrograms(query, visual, semantic, out_dir="similar_results"):
+def save_similar_songs(query, visual, scores, out_dir="similar_songs_results"):
     os.makedirs(out_dir, exist_ok=True)
 
-    # Save the query image
+    # Save the query spectrogram
     shutil.copy(query, os.path.join(out_dir, "query.png"))
 
     # Save visually similar spectrograms
@@ -86,29 +73,32 @@ def save_similar_spectrograms(query, visual, semantic, out_dir="similar_results"
         dst_path = os.path.join(out_dir, f"visual_{idx}.png")
         shutil.copy(img_path, dst_path)
 
-    # Save semantically similar spectrograms
-    for idx, img_path in enumerate(semantic, start=1):
-        dst_path = os.path.join(out_dir, f"semantic_{idx}.png")
-        shutil.copy(img_path, dst_path)
-
-    print(f"📁 Saved all individual spectrograms in '{out_dir}'")
+    # Save list of similar songs to a text file
+    txt_path = os.path.join(out_dir, "similar_songs.txt")
+    with open(txt_path, "w") as f:
+        f.write("Query Song:\n")
+        f.write(f"{os.path.basename(query)}\n\n")
+        f.write("Top 4 Visually Similar Songs:\n")
+        for idx, (path, score) in enumerate(zip(visual, scores), start=1):
+            f.write(f"{idx}. {os.path.basename(path)} (Similarity: {score:.4f})\n")
+    print(f"📁 Saved all results in '{out_dir}'")
 
 # --- CREATE COLLAGE ---
-def save_collage(query, visual, semantic, out_file="similar_results/collage.png"):
-    images = [Image.open(query)] + [Image.open(p) for p in visual] + [Image.open(p) for p in semantic]
-    titles = ["Query"] + [f"Visual {i}" for i in range(1, 5)] + [f"Semantic {i}" for i in range(1, 5)]
+def save_collage(query, visual, out_file="similar_songs_results/collage.png"):
+    images = [Image.open(query)] + [Image.open(p) for p in visual]
+    titles = ["Query"] + [f"Visual {i}" for i in range(1, 5)]
 
     plt.figure(figsize=(20, 4))
     for i, (img, title) in enumerate(zip(images, titles), start=1):
-        plt.subplot(1, 9, i)
+        plt.subplot(1, 5, i)
         plt.imshow(img)
         plt.title(title, fontsize=10)
         plt.axis("off")
     plt.tight_layout()
     plt.savefig(out_file)
-    print(f"📸 Saved collage of results to '{out_file}'")
+    print(f"📸 Saved collage to '{out_file}'")
 
-# --- SAVE EVERYTHING ---
-output_folder = "similar_results"
-save_similar_spectrograms(query_path, visually_similar_paths, semantically_similar_paths, out_dir=output_folder)
-save_collage(query_path, visually_similar_paths, semantically_similar_paths, out_file=os.path.join(output_folder, "collage.png"))
+# --- RUN ---
+output_folder = "similar_songs_results"
+save_similar_songs(query_path, visually_similar_paths, visually_similar_scores, out_dir=output_folder)
+save_collage(query_path, visually_similar_paths, out_file=os.path.join(output_folder, "collage.png"))
