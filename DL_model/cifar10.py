@@ -21,10 +21,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import multiprocessing
 
-#import kagglehub
-# Download latest version (currently commented out)
-#path = kagglehub.dataset_download("pranked03/urbansound8k-mel-spectrogram-images")
-#print("Path to dataset files:", path)
+import kagglehub
+#Download latest version (currently commented out)
+path = kagglehub.dataset_download("pranked03/urbansound8k-mel-spectrogram-images")
+print("Path to dataset files:", path)
 
 
 def main():

@@ -1,4 +1,4 @@
-import psycopg2
+
 from dotenv import load_dotenv
 import os
 import json
@@ -43,7 +43,7 @@ def load_songs_from_csv(csv_path):
             })
     return songs
 
-#extract the objects from the JSON file and put it in a list
+#extract the objects from the JSONimport psycopg2 file and put it in a list
 def load_songs_from_json(json_path):
     with open(json_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
