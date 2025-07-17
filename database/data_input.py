@@ -18,7 +18,7 @@ DB_CONFIG = {
 }
 
 #insert file_path to the file you want to extract the songs list from
-file_path = "web_scraping_result\everynoise_scraper\everynoise_scraper\music_dump.json"  # or "your_input_file.csv"
+file_path = "scraping_jamendo\cleaned_music_jamendo.csv"  # or "your_input_file.csv"
 
 #extract the objects from the CSV file and put it in a list
 def load_songs_from_csv(csv_path):
@@ -37,8 +37,8 @@ def load_songs_from_csv(csv_path):
                 genres = []
 
             songs.append({
-                "song_name": row["song"].strip().lower(),
-                "artist_name": row["artist"].strip().lower(),
+                "song_name": row["song_name"].strip().lower(),
+                "artist_name": row["artist_name"].strip().lower(),
                 "genres": genres
             })
     return songs
@@ -60,8 +60,8 @@ def load_songs_from_json(json_path):
                 genres = []
 
             songs.append({
-                "song_name": song["song"].strip().lower(),
-                "artist_name": song["artist"].strip().lower(),
+                "song_name": song["song_name"].strip().lower(),
+                "artist_name": song["artist_name"].strip().lower(),
                 "genres": genres
             })
         return songs
