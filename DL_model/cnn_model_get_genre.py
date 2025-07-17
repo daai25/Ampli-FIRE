@@ -2,23 +2,26 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import datasets, transforms, models
-from torch.utils.data import DataLoader, random_split
+from torchvision import transforms, models
+from torch.utils.data import Dataset, DataLoader, random_split
 from sklearn.metrics import accuracy_score
 from PIL import Image
+import pandas as pd
 import shutil
 import csv
 import numpy as np
+import pandas as pd
 
 # --- CONFIG ---
-train_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32/train"  # <-- Path to train folder
-test_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32/test"    # <-- Path to test folder
+images_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32"             # Folder with all spectrogram images
+labels_csv = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32/song_artist_genre.csv"                    # CSV defines training dataset
+test_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32"          # Folder with test images
 batch_size = 32
 num_epochs = 15
 learning_rate = 0.001
 img_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "genre_classifier_subfolders.pth"
+model_path = "genre_classifier_from_csv.pth"
 output_csv = "predictions.csv"
 output_folder = "predicted"
 
@@ -39,12 +42,46 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.5]*3, std=[0.5]*3)
 ])
 
-# --- LOAD TRAIN DATASET ---
-dataset = datasets.ImageFolder(root=train_dir, transform=transform)
-dataset.class_to_idx = {g: i for i, g in enumerate(fixed_genres_lower)}
-dataset.idx_to_class = {i: g for g, i in dataset.class_to_idx.items()}
+# --- CUSTOM DATASET FROM CSV ---
+class SpectrogramDataset(Dataset):
+    def __init__(self, csv_file, images_folder, transform=None):
+        self.df = pd.read_csv(csv_file)
+        self.images_folder = images_folder
+        self.transform = transform
 
-print(f"✅ Training genres (fixed to 15): {[g.title() for g in dataset.idx_to_class.values()]}")
+        # Map genres to fixed list (unknown → 'Other')
+        self.df['genre'] = self.df['genre'].str.lower().apply(
+            lambda g: g if g in fixed_genres_lower else 'other'
+        )
+        self.class_to_idx = {g: i for i, g in enumerate(fixed_genres_lower)}
+        self.idx_to_class = {i: g for g, i in self.class_to_idx.items()}
+
+        # Filter only files that exist
+        existing_files = []
+        for i, row in self.df.iterrows():
+            img_path = os.path.join(self.images_folder, row['filename'])
+            if os.path.exists(img_path):
+                existing_files.append(row)
+            else:
+                print(f"⚠️ Skipping missing file: {row['filename']}")
+        self.df = pd.DataFrame(existing_files)
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        img_name = self.df.iloc[idx]['filename']
+        genre_name = self.df.iloc[idx]['genre']
+        img_path = os.path.join(self.images_folder, img_name)
+        img = Image.open(img_path).convert("RGB")
+        label = self.class_to_idx[genre_name]
+        if self.transform:
+            img = self.transform(img)
+        return img, label
+
+# --- LOAD DATASET ---
+dataset = SpectrogramDataset(labels_csv, images_dir, transform=transform)
+print(f"✅ Training dataset: {len(dataset)} spectrograms found in CSV and folder.")
 
 # --- SPLIT DATASET ---
 total_size = len(dataset)
@@ -69,6 +106,7 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # --- TRAINING LOOP ---
 print("🚀 Starting training...")
+best_val_acc = 0.0
 for epoch in range(num_epochs):
     model.train()
     running_loss, correct, total = 0.0, 0, 0
@@ -89,28 +127,30 @@ for epoch in range(num_epochs):
     train_acc = 100. * correct / total
     print(f"Epoch [{epoch+1}/{num_epochs}] Loss: {train_loss:.4f} Acc: {train_acc:.2f}%")
 
-# --- VALIDATION ---
-model.eval()
-val_preds, val_labels = [], []
-with torch.no_grad():
-    for inputs, labels in val_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
-        outputs = model(inputs)
-        _, preds = outputs.max(1)
-        val_preds.extend(preds.cpu().numpy())
-        val_labels.extend(labels.cpu().numpy())
-val_acc = accuracy_score(val_labels, val_preds) * 100
-print(f"📊 Validation Accuracy: {val_acc:.2f}%")
+    # Validation
+    model.eval()
+    val_preds, val_labels = [], []
+    with torch.no_grad():
+        for inputs, labels in val_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            outputs = model(inputs)
+            _, preds = outputs.max(1)
+            val_preds.extend(preds.cpu().numpy())
+            val_labels.extend(labels.cpu().numpy())
+    val_acc = accuracy_score(val_labels, val_preds) * 100
+    print(f"📊 Validation Accuracy: {val_acc:.2f}%")
 
-# --- SAVE MODEL ---
-torch.save({
-    'model_state_dict': model.state_dict(),
-    'class_to_idx': dataset.class_to_idx,
-    'idx_to_class': dataset.idx_to_class
-}, model_path)
-print(f"💾 Saved model to '{model_path}'")
+    # Save best model
+    if val_acc > best_val_acc:
+        best_val_acc = val_acc
+        torch.save({
+            'model_state_dict': model.state_dict(),
+            'class_to_idx': dataset.class_to_idx,
+            'idx_to_class': dataset.idx_to_class
+        }, model_path)
+        print(f"💾 Saved new best model at Epoch {epoch+1} (Val Acc: {val_acc:.2f}%)")
 
-# --- PREDICT FUNCTIONS ---
+# --- LOAD BEST MODEL ---
 def load_model(model_path):
     checkpoint = torch.load(model_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
@@ -161,7 +201,7 @@ def predict_all_in_folder(test_dir, idx_to_class, output_csv, organize_folder=No
     if organize_folder:
         print(f"📦 Images organized by genre in '{organize_folder}/'")
 
-# --- MAIN LOOP ---
+# --- MAIN MENU ---
 idx_to_class = load_model(model_path)
 
 while True:
