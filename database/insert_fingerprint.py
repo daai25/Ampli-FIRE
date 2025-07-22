@@ -42,6 +42,7 @@ def update_fingerprint(cursor, conn, image_path, song_name, artist_name):
         SELECT song_id, fingerprint FROM songs
         WHERE song_name = %s AND artist_name = %s
     """, (song_name, artist_name))
+    print(f"fingerprint added to '{song_name}' by '{artist_name}'")
     result = cursor.fetchone()
 
     if result is None:
