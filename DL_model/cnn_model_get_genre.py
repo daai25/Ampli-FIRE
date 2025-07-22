@@ -18,8 +18,9 @@ val_dir = os.path.join(base_dir, "val")
 test_dir = os.path.join(base_dir, "test")
 label_file = "/mnt/c/zhaw/Ampli-FIRE/labeled_song_artists_grouped.csv"
 batch_size = 32
-num_epochs = 25
+num_epochs = 50  # Increase slightly but let early stopping control
 learning_rate = 0.0003
+patience = 5  # Early stopping patience (stop if no val improvement for 5 epochs)
 img_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model_path = "genre_classifier_mobilenetv3_fixed.pth"
@@ -33,7 +34,7 @@ idx_to_class = {i: g for g, i in class_to_idx.items()}
 
 # --- COLLAPSE SUBGENRES ---
 def collapse_genre(subgenre):
-    for parent in parent_genres[:-1]:  # exclude "Other"
+    for parent in parent_genres[:-1]:
         if parent.lower() in subgenre.lower():
             return parent
     return "Other"
@@ -103,7 +104,7 @@ print(f"📊 Train distribution: { {idx_to_class[k]: v for k, v in train_dist.it
 # --- MODEL ---
 model = models.mobilenet_v3_large(weights=models.MobileNet_V3_Large_Weights.DEFAULT)
 for param in model.parameters():
-    param.requires_grad = True  # full fine-tuning
+    param.requires_grad = True
 model.classifier[3] = nn.Linear(model.classifier[3].in_features, len(parent_genres))
 model = model.to(device)
 
@@ -112,8 +113,10 @@ criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
 optimizer = optim.AdamW(model.parameters(), lr=learning_rate)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
 
-# --- TRAINING LOOP ---
+# --- TRAINING LOOP WITH EARLY STOPPING ---
 best_val_acc = 0.0
+epochs_no_improve = 0
+
 for epoch in range(num_epochs):
     model.train()
     running_loss, correct, total = 0.0, 0, 0
@@ -149,6 +152,7 @@ for epoch in range(num_epochs):
 
     scheduler.step()
 
+    # Check for improvement
     if val_acc > best_val_acc:
         best_val_acc = val_acc
         torch.save({
@@ -157,11 +161,32 @@ for epoch in range(num_epochs):
             'idx_to_class': idx_to_class
         }, model_path)
         print(f"💾 Saved best model at Epoch {epoch+1} (Val Acc: {val_acc:.2f}%)")
+        epochs_no_improve = 0
+    else:
+        epochs_no_improve += 1
+        print(f"⚠️ No improvement for {epochs_no_improve} epochs")
+        if epochs_no_improve >= patience:
+            print(f"⏹ Early stopping at epoch {epoch+1}")
+            break
 
 # --- LOAD BEST MODEL ---
 checkpoint = torch.load(model_path, map_location=device)
 model.load_state_dict(checkpoint['model_state_dict'])
 model.eval()
+
+# --- TEST ACCURACY ---
+print("\n🔍 Evaluating on test set...")
+test_preds, test_labels = [], []
+with torch.no_grad():
+    for inputs, labels in tqdm(test_loader, desc="Testing"):
+        inputs, labels = inputs.to(device), labels.to(device)
+        outputs = model(inputs)
+        _, preds = outputs.max(1)
+        test_preds.extend(preds.cpu().numpy())
+        test_labels.extend(labels.cpu().numpy())
+
+test_acc = accuracy_score(test_labels, test_preds) * 100
+print(f"✅ Overall Test Accuracy: {test_acc:.2f}%")
 
 # --- PREDICT FUNCTIONS ---
 def predict_image(image_name):
