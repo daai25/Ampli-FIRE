@@ -1,13 +1,16 @@
 import streamlit as st
+import time
 
-col1, col2, col3 = st.columns([3, 2, 3])
-with col2:
+coll1, coll2, coll3 = st.columns([3, 2, 3])
+with coll2:
     st.image("Amplifire_logo.png", width=150)
 
 # Configuring Page
 st.set_page_config(page_title="Upload or Enter Text", layout="centered")
 
 st.session_state.step = 1
+
+st.session_state.count = 0
 
 # Background as black
 st.markdown("""
@@ -39,21 +42,35 @@ st.markdown("""
 # Upload section
 st.title("Upload or Enter Text")
 
-uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
+uploaded_file = st.file_uploader("Upload a file", type=["mp3"], disabled=st.session_state.count is not 0)
 
 st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
 
 # Text boxes
-text1 = st.text_input("Song Name:")
+# Disables text box if user uploads a file.
+song_name = st.text_input("Song Name:", disabled=uploaded_file is not None)
+if song_name:
+    st.session_state.count = 1
 
 col1, col2 = st.columns([1, 1])
 with col1:
-    text2 = st.text_input("Artist Name:")
+    artist_name = st.text_input("Artist Name:", disabled=uploaded_file is not None)
 with col2:
-    text3 = st.text_input("Genre:")
+    initial_genre = st.text_input("Genre:", disabled=uploaded_file is not None)
 
 if st.session_state.step < 3:
     if st.button("Next"):
-        st.session_state.step += 1
+        # st.session_state.step += 1
+        st.write("## Thinking...")
+        st.write(" This should not take long. ")
+        time.sleep(10)
+        # Have if upload here
+        # We translate the song into a spectrogram
+        # We put it through the Deep Learning Model and the output goes into a genre variable
+        # We put it through Cosine Similarity Model, output goes into variables
+        # Have if text-based here
+        # Put it through Linear Regression "Model"
+        st.write("# Recommended Songs: ")
+        # We display all the variables
 
-
+# The Restart Button goes here...maybe
