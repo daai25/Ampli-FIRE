@@ -5,6 +5,8 @@ st.image("Amplifire_logo.png", width=150)
 # Configuring Page
 st.set_page_config(page_title="Upload or Enter Text", layout="centered")
 
+st.session_state.step = 1
+
 # Background as black
 st.markdown("""
     <style>
