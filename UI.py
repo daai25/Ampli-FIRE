@@ -1,6 +1,13 @@
 import streamlit as st
 
-st.image("Amplifire_logo.png", width=150)
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="Amplifire_logo.png" width="150">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Configuring Page
 st.set_page_config(page_title="Upload or Enter Text", layout="centered")
