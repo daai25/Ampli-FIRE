@@ -1,9 +1,9 @@
 import streamlit as st
 
-# ----- Page Config -----
+# Configuring Page
 st.set_page_config(page_title="Upload or Enter Text", layout="centered")
 
-# ----- Custom CSS for Black Background -----
+# Background as black
 st.markdown("""
     <style>
     body {
@@ -30,22 +30,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ----- Upload Section -----
-st.title("🎵 Upload or Enter Text")
+# Upload section
+st.title("Upload or Enter Text")
 
-uploaded_file = st.file_uploader("Upload a file", type=["csv", "txt", "json"])
+uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
 
-# ----- Textboxes with "OR" between them -----
+# Text boxes
 col1, col2, col3 = st.columns([1, 0.2, 1])
 with col1:
-    text1 = st.text_input("Input Option 1")
+    text1 = st.text_input("Song Name:")
 with col2:
-    st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
+    text2 = st.text_input("Artist Name:")
 with col3:
-    text2 = st.text_input("Input Option 2")
-
-# Add another "OR" below second input
-st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
-
-# Third textbox below
-text3 = st.text_input("Input Option 3")
+    text3 = st.text_input("Genre:")
