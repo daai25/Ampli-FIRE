@@ -16,7 +16,7 @@ DB_CONFIG = {
 }
 
 # === CONFIG: Set the folder path containing PNG files ===
-FOLDER_PATH = "spectrograms_32"  # Change this to your folder
+FOLDER_PATH = "spectrograms_64"  # Change this to your folder
 # ========================================================
 
 def extract_song_and_artist(filename):
