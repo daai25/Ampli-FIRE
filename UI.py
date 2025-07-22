@@ -1,9 +1,10 @@
 import streamlit as st
 
+#st.image("Amplifire_logo.png", width=150)
 st.markdown(
     """
     <div style="text-align: center;">
-        <img src="Amplifire_logo.png" width="150">
+        <img src="Amplifire_logo.png" width="100">
     </div>
     """,
     unsafe_allow_html=True
@@ -45,6 +46,8 @@ st.markdown("""
 st.title("Upload or Enter Text")
 
 uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
+
+st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
 
 # Text boxes
 text1 = st.text_input("Song Name:")
