@@ -1,6 +1,6 @@
 import streamlit as st
 
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([2, 2, 2])
 with col2:
     st.image("Amplifire_logo.png", width=150)
 
