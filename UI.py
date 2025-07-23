@@ -141,7 +141,7 @@ st.markdown("""
 # Upload section
 st.title("Upload or Enter Text")
 
-uploaded_file = st.file_uploader("Upload a file", type=["mp3"], disabled=st.session_state.count is not 0)
+uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
 
 st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
 
