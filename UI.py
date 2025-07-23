@@ -12,8 +12,7 @@ import os
 import glob
 from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
-from torchvision.models import resnet18
-import io
+import pandas as pd
 
 # Configuring Page
 st.set_page_config(page_title="Ampli-FIRE", layout="centered")
@@ -24,6 +23,8 @@ img_size = 224
 genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
                  "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
                  "World & International", "Blues", "Other"]
+metadata_df = pd.read_csv("spectrogram_metadata.csv")
+metadata_dict = metadata_df.set_index("filename").to_dict(orient="index")
 
 def process_one_mp3(file):
     # Step 1: Load the audio
@@ -72,7 +73,7 @@ def load_genre_model():
 
 @st.cache_resource
 def load_similar_model():
-    similar_model = torch.jit.load(similar_model_file, map_location="cpu")
+    similar_model = torch.load(similar_model_file, map_location="cpu", weights_only=False)
     similar_model.eval()
     return similar_model
 
@@ -251,9 +252,12 @@ if st.session_state.show_recommend:
             top_indices = similarities.argsort()[::-1][:4]
             top_files = [valid_paths[i] for i in top_indices]
 
-            st.write("### 🔍 Top 4 Visually Similar Spectrograms (by filename)")
+            st.write("### Songs with Similarity Confidence")
             for i, path in enumerate(top_files, 1):
-                st.write(f"{i}. `{os.path.basename(path)}` (Score: {similarities[top_indices[i - 1]]:.4f})")
+                filename = os.path.basename(path)
+                song_info = metadata_dict.get(filename, {"song_title": "Unknown", "artist": "Unknown"})
+                st.write(
+                    f"{i}. **{song_info['song_title']}** by *{song_info['artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
         else:
             st.warning("⚠️ No embeddings found in dataset for similarity search.")
     if uploaded_file is None:
