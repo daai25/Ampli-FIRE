@@ -1,5 +1,5 @@
-# Modelling Report: Genre Classification & Similarity Search
-This report documents the modelling work for music genre classification and spectrogram-based similarity search. Using spectrogram images and convolutional neural networks, we developed and evaluated models for automatic genre prediction and visual similarity retrieval.
+# Modelling Report: Genre Classification, Similarity Search & Recommendation
+This report documents the modelling work for music genre classification, spectrogram-based similarity search, and genre-based song recommendation. Using spectrogram images and metadata, we developed and evaluated models for automatic genre prediction, visual similarity retrieval, and genre-filtered song suggestions.
 
 ## Initial situation
 
@@ -9,6 +9,7 @@ The goal of this modelling phase was twofold:
 
 1. **Genre Classification**: Develop a machine learning model capable of predicting the parent genre of a song based on its spectrogram representation.
 2. **Similarity Search**: Build a feature embedding system to identify visually similar spectrograms for content-based retrieval or music recommendation.
+3. **Genre-Based Recommendation**: Implement a metadata-driven recommender to suggest songs from the same genre, serving as a fast and interpretable baseline.
 
 This aligns with the *Data Mining Goals* of exploring spectrogram-based learning for music information retrieval.
 
@@ -38,8 +39,8 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 
 
 ## Model Descriptions
-### Genre Classification Model
 
+### Genre Classification Model
 #### Overview
 - **Architecture**: MobileNetV3 Large
 - **Modifications**:
@@ -74,7 +75,6 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 
 
 ### Similarity Search Model
-
 #### Overview
 - **Architecture**: ResNet-18 (final FC layer removed)
 - **Feature Dimension**: 512
@@ -94,6 +94,33 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 
 #### Pipeline Diagram
 ![](pipeline_diagram_similar_songs_model.png)
+
+
+### Genre-Based Recommendation Model
+
+#### Overview
+A simple metadata-based recommendation system that suggests songs from the same genre using filtering. Additionally, a placeholder regression model is trained to simulate feature-based extensions.
+
+#### Pipeline
+![](pipeline_diagram_genre_recommendation_model.png)
+
+#### Code Summary
+
+- **Language**: Python (`pandas`, `sklearn`)
+- **Steps**:
+  - Encode genre as numeric label
+  - Fit dummy regression model (non-predictive)
+  - Filter songs by genre and randomly select from top-N
+
+```python
+def recommend_by_genre(genre, n_pool=100, top_n=3):
+    genre_songs = df[df['genres'] == genre]
+    top_n_pool = genre_songs.head(n_pool)
+    shuffled = top_n_pool.sample(frac=1).reset_index(drop=True)
+    return shuffled[['song_name', 'artist_name', 'genres']].head(top_n)
+
+
+
 
 ## Results
 
@@ -133,12 +160,24 @@ Abigail_Christine_Hill_-_Backstabber_spectrogram.png
 #### Collage
 ![](collage.png)
 
-## Results
-Key figures dependent on the model and modelling objective
+### Genre-Based Recommender
 
-- RMSD, ROC/Lift-Charts, AUC, Confusion Matrix, Accuracy, Precision, Recall
-- Coherence, Perplexity, ... 
-- If applicable: analyses/plots of (hyper)parameter screenings
+#### Sample Output (Genre: Rock)
+
+| Song Name                     | Artist Name              | Genre |
+|------------------------------|--------------------------|--------|
+| Backstabber                  | Abigail Christine Hill   | Rock   |
+| Tuesday in Japan             | Marine Drive             | Rock   |
+| Paranoia                     | Anthony Rubery           | Rock   |
+| Hypotenuse                   | LA Scallywag             | Rock   |
+| Don’t Want You Back          | Sunbathers               | Rock   |
+
+| Metric          | Value                        |
+|-----------------|------------------------------|
+| Filtering Speed | Instant (shuffled selection) |
+| Model Training  | Dummy regression (optional)  |
+| Use Case        | Cold-start recommender, genre exploration |
+
 
 ## Model Interpretation
 ### Classifier
@@ -149,20 +188,28 @@ Key figures dependent on the model and modelling objective
 - Embeddings visually cluster spectrograms effectively.
 - Note: visual similarity ≠ auditory similarity.
 
+### Genre-Based Recommendation
+- Lightweight, explainable, and effective for cold-start or genre-tagged browsing.
+- Easily extendable with learned features or collaborative filtering.
+
 ## Conclusions and next steps
 ### Key Findings
 - The classifier reliably predicts parent genres from spectrograms.
-- The feature embeddings support effective similarity-based retrieval.
+- The similarity model retrieves visually close examples using embeddings.
+- Genre filtering offers a strong baseline for interpretable music recommendations.
 
 ### Limitations
-- Class imbalance affects less represented genres.
-- Spectrograms alone do not capture temporal dynamics of music.
+- Genre boundaries are fuzzy and dataset is imbalanced.
+- Spectrograms omit rhythm and musical structure.
+- Genre-based recommendation is simplistic and non-personalized.
 
 ### Extensions
-- Combine spectrograms with metadata (lyrics, tempo).
-- Explore larger models (EfficientNet, Vision Transformers).
-- Integrate audio embeddings (OpenL3, CLAP) for perceptual similarity.
+- Fuse metadata with embeddings for hybrid recommendations.
+- Explore larger architectures (e.g., ViT, EfficientNet).
+- Use pretrained audio embeddings (CLAP, OpenL3).
+- Integrate user preferences or usage logs for personalization.
 
 ### Deployment Proposal
-- Deploy genre classifier as a REST API for tagging songs.
-- Embed similarity search in a music discovery web interface.
+- Expose genre classifier as a REST API for tagging tracks.
+- Build a discovery UI powered by embedding search.
+- Embed genre-based fallback recommender into playlist systems.
