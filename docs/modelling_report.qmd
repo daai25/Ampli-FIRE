@@ -16,7 +16,6 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 
 - **Datasets**: Spectrogram images (PNG format) generated from audio tracks, split into:
   - `train`, `val`, `test` folders (64x64 spectrograms).
-  - Additional `spectrograms_32` dataset (32x32 spectrograms) for similarity search.
 
 - **Label source**: `labeled_song_artists_grouped.csv`  
   - 15 parent genres defined:
@@ -41,7 +40,7 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 ## Model Descriptions
 ### Genre Classification Model
 
-#### 📖 Overview
+#### Overview
 - **Architecture**: MobileNetV3 Large
 - **Modifications**:
   - Replaced classifier head with `Linear(in_features, 15)`
@@ -70,15 +69,9 @@ This aligns with the *Data Mining Goals* of exploring spectrogram-based learning
 - Framework: PyTorch (torch==2.x, torchvision==0.15.x)
 
 #### Pipeline Diagram
-Spectrogram Image
-↓
-Data Augmentation (Train only)
-↓
-MobileNetV3 Large
-↓
-Softmax
-↓
-Predicted Genre
+![](pipeline_diagram_genre_classfication_model.png)
+
+
 
 ### Similarity Search Model
 
@@ -100,15 +93,7 @@ Predicted Genre
   - `collage.png`: Collage of query + similar spectrograms
 
 #### Pipeline Diagram
-Query Spectrogram
-↓
-ResNet-18 Feature Extractor
-↓
-512-Dimensional Embedding
-↓
-Cosine Similarity (to all others)
-↓
-Top-4 Ranked Similar Spectrograms
+![](pipeline_diagram_similar_songs_model.png)
 
 ## Results
 
@@ -121,26 +106,32 @@ Top-4 Ranked Similar Spectrograms
 | Early Stopping     | Triggered at Epoch 37 |
 
 #### Confusion Matrix
-*(Replace with actual figure)*  
+![](confusion_matrix.png)
 
 #### Training Progress
 - Plot of **Training & Validation Accuracy over Epochs**
+![](Training_Validation_Accuracy_over_Epochs.png)
+
 - Plot of **Training Loss over Epochs**
+![](Training_Loss_over_Epochs.png)
 
 ---
 
 ### Similarity Search
 
 #### Example Query Results
+Query Song:
+Abigail_Christine_Hill_-_Backstabber_spectrogram.png
+
 | Rank | Filename              | Cosine Similarity |
 |------|-----------------------|--------------------|
-| 1    | SongX_spectrogram.png | 0.9812             |
-| 2    | SongY_spectrogram.png | 0.9768             |
-| 3    | SongZ_spectrogram.png | 0.9743             |
-| 4    | SongA_spectrogram.png | 0.9691             |
+| 1    | Marine_Drive_-_Tuesday_in_Japan_spectrogram.png | 0.9810             |
+| 2    | Paranoia_-_Anthony_Rubery_spectrogram.png | 0.9809             |
+| 3    | Amnesia_-_SloUCobra_a.k.a._Umberto_spectrogram.png | 0.9788             |
+| 4    | LA_Scallywag_-_Hypotenuse_spectrogram.png | 0.9785             |
 
 #### Collage
-*(Insert `collage.png` here)*
+![](collage.png)
 
 ## Results
 Key figures dependent on the model and modelling objective
