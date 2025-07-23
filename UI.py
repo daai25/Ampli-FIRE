@@ -3,22 +3,19 @@ import streamlit as st
 from genre_rec_model import recommend_by_genre
 import torch
 from torchvision import transforms
+from PIL import Image
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 from pydub import AudioSegment
-import os
-import glob
-from PIL import Image
-from sklearn.metrics.pairwise import cosine_similarity
 import io
+import os
 
 # Configuring Page
 st.set_page_config(page_title="Ampli-FIRE", layout="centered")
 
-genre_model_file = "mobilenetv3_genre_classifier_script.pt"
-similar_model_file = "resnet18_feature_extractor_full.pt"
+model_file = "mobilenetv3_genre_classifier_script.pt"
 img_size = 224
 genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
                  "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
@@ -63,20 +60,12 @@ def process_one_mp3(file):
 
 
 @st.cache_resource
-def load_genre_model():
-    genre_model = torch.jit.load(genre_model_file, map_location="cpu")
-    genre_model.eval()
-    return genre_model
+def load_model():
+    model = torch.jit.load(model_file, map_location="cpu")
+    model.eval()
+    return model
 
-
-@st.cache_resource
-def load_similar_model():
-    similar_model = torch.jit.load(similar_model_file, map_location="cpu")
-    similar_model.eval()
-    return similar_model
-
-genre_model = load_genre_model()
-similar_model = load_similar_model()
+model = load_model()
 
 transform = transforms.Compose([
     transforms.Resize((img_size, img_size)),
@@ -89,7 +78,7 @@ def predict_genre(spectrogram_path):
     img = Image.open(spectrogram_path).convert("RGB")
     img_tensor = transform(img).unsqueeze(0)
     with torch.no_grad():
-        outputs = genre_model(img_tensor)
+        outputs = model(img_tensor)
         probs = torch.softmax(outputs, dim=1)[0]
         top_idx = torch.argmax(probs).item()
         confidence = probs[top_idx].item()
@@ -159,6 +148,15 @@ with col2:
     initial_genre = st.selectbox("Genre:",genre_options, disabled=uploaded_file is not None)
 
 
+model_file = "mobilenetv3_genre_classifier_script.pt"
+
+
+def load_model():
+    model = torch.jit.load(model_file, map_location="cpu")
+    model.eval()
+    return model
+
+
 if st.session_state.step < 3:
     if st.button("Next"):
         st.session_state.show_recommend = True
@@ -167,46 +165,7 @@ if st.session_state.step < 3:
             # Spectrogram
             spec_path = process_one_mp3(uploaded_file)
             predicted_genre, confidence = predict_genre(spec_path)
-            # Set path to spectrogram dataset
-            dataset_dir = "spectrograms_64"  # adjust path if needed
-            image_paths = glob.glob(os.path.join(dataset_dir, "*.png"))
-
-
-            def get_embedding(img_path):
-                img = Image.open(img_path).convert("RGB")
-                img_tensor = transform(img).unsqueeze(0)
-                with torch.no_grad():
-                    embedding = similar_model(img_tensor)
-                return embedding.squeeze().cpu().numpy().flatten()
-
-
-            # Get embedding for the uploaded spectrogram
-            query_embedding = get_embedding(spec_path).reshape(1, -1)
-
-            # Compute embeddings for the dataset
-            dataset_embeddings = []
-            valid_paths = []
-
-            for path in image_paths:
-                try:
-                    emb = get_embedding(path)
-                    dataset_embeddings.append(emb)
-                    valid_paths.append(path)
-                except Exception:
-                    continue  # Skip unreadable images
-
-            # Compute similarity
-            if dataset_embeddings:
-                dataset_embeddings = np.array(dataset_embeddings)
-                similarities = cosine_similarity(query_embedding, dataset_embeddings).flatten()
-                top_indices = similarities.argsort()[::-1][:4]
-                top_files = [valid_paths[i] for i in top_indices]
-
-                st.write("### 🔍 Top 4 Visually Similar Spectrograms (by filename)")
-                for i, path in enumerate(top_files, 1):
-                    st.write(f"{i}. `{os.path.basename(path)}` (Score: {similarities[top_indices[i - 1]]:.4f})")
-            else:
-                st.warning("⚠️ No embeddings found in dataset for similarity search.")
+            st.write(recommend_by_genre(predicted_genre))
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
 
