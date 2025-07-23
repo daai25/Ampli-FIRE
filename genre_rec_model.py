@@ -34,3 +34,4 @@ def recommend_by_genre(genre, n_pool=100, top_n=4):
     # 4. Return the first n_return songs (e.g., 4)
     return shuffled[['song_name', 'artist_name', 'genres']].head(top_n)
 
+
