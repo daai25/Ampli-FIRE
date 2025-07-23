@@ -122,7 +122,8 @@ if st.session_state.step < 3:
         if uploaded_file is not None:
             # Spectrogram
             spec = process_one_mp3(uploaded_file)
-            model = load_model()
+            predicted_genre, confidence = predict_genre(spec)
+            st.write(recommend_by_genre(predicted_genre))
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
 
