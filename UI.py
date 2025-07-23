@@ -1,3 +1,4 @@
+import uuid
 import streamlit as st
 from genre_rec_model import recommend_by_genre
 import torch
@@ -45,14 +46,17 @@ def process_one_mp3(file):
     ax.set(title="Spectrogram (30s–60s)")
     plt.tight_layout()
 
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png', bbox_inches='tight', dpi=150)
-    plt.close(fig)
-    buf.seek(0)
+    # Create unique filename
+    output_dir = "output_spectrograms"
+    os.makedirs(output_dir, exist_ok=True)
+    image_filename = f"{uuid.uuid4().hex}.png"
+    image_path = os.path.join(output_dir, image_filename)
 
-    # Step 7: Return as PIL image (you can convert to other formats as needed)
-    image = Image.open(buf)
-    return image
+    fig.savefig(image_path, format='png', bbox_inches='tight', dpi=150)
+    plt.close(fig)
+
+    # Step 7: Return the path
+    return image_path
 
 
 @st.cache_resource
@@ -68,6 +72,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5]*3, std=[0.5]*3)
 ])
+
 
 def predict_genre(spectrogram_path):
     img = Image.open(spectrogram_path).convert("RGB")
@@ -158,8 +163,8 @@ if st.session_state.step < 3:
         st.write("# Recommended Songs: ")
         if uploaded_file is not None:
             # Spectrogram
-            spec = process_one_mp3(uploaded_file)
-            predicted_genre, confidence = predict_genre(spec)
+            spec_path = process_one_mp3(uploaded_file)
+            predicted_genre, confidence = predict_genre(spec_path)
             st.write(recommend_by_genre(predicted_genre))
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
