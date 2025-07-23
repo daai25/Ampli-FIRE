@@ -73,7 +73,8 @@ def load_genre_model():
 @st.cache_resource
 def load_similar_model():
     similar_model = resnet18()
-    similar_model.load_state_dict(similar_model_file)
+    state_dict = torch.load("resnet18_feature_extractor_full.pt", map_location="cpu")
+    similar_model.load_state_dict(state_dict)
     similar_model.eval()
     return similar_model
 
