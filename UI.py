@@ -56,6 +56,11 @@ st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
 
 # Text boxes
 # Disables text box if user uploads a file.
+
+genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
+                 "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
+                 "World & International", "Blues", "Other"]
+
 song_name = st.text_input("Song Name:", disabled=uploaded_file is not None)
 if song_name:
     st.session_state.count = 1
@@ -64,7 +69,7 @@ col1, col2 = st.columns([1, 1])
 with col1:
     artist_name = st.text_input("Artist Name:", disabled=uploaded_file is not None)
 with col2:
-    initial_genre = st.text_input("Genre:", disabled=uploaded_file is not None)
+    initial_genre = st.selectbox("Genre:",genre_options, disabled=uploaded_file is not None)
 
 if st.session_state.step < 3:
     if st.button("Next"):
