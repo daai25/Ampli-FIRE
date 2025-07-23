@@ -73,3 +73,6 @@ if st.session_state.step < 3:
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
         # We display all the variables
+
+if st.button("Recommend Again"):
+    st.write(recommend_by_genre(initial_genre))
