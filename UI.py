@@ -74,9 +74,6 @@ with col2:
 if st.session_state.step < 3:
     if st.button("Next"):
         st.session_state.show_recommend = True
-        st.write("## Thinking...")
-        st.write(" This should not take long. ")
-        time.sleep(5)
         st.write("# Recommended Songs: ")
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
