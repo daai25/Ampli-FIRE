@@ -24,6 +24,7 @@ genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Ja
                  "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
                  "World & International", "Blues", "Other"]
 metadata_df = pd.read_csv("labeled_song_artists_grouped.csv")
+metadata_df = metadata_df.drop_duplicates(subset="Filename", keep="first")
 metadata_dict = metadata_df.set_index("Filename").to_dict(orient="index")
 
 def process_one_mp3(file):
