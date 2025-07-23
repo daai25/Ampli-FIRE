@@ -12,6 +12,7 @@ import os
 import glob
 from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
+from torchvision.models import resnet18
 import io
 
 # Configuring Page
@@ -71,7 +72,8 @@ def load_genre_model():
 
 @st.cache_resource
 def load_similar_model():
-    similar_model = torch.jit.load(similar_model_file, map_location="cpu")
+    similar_model = resnet18()
+    similar_model.load_state_dict(similar_model_file, map_location="cpu")
     similar_model.eval()
     return similar_model
 
