@@ -10,7 +10,7 @@ from torchvision import models, transforms
 from sklearn.metrics.pairwise import cosine_similarity
 
 # --- CONFIG ---
-data_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_32"  # <-- Change to your dataset path
+data_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_64"  # <-- Change to your dataset path
 img_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -27,6 +27,17 @@ model = resnet18(weights=ResNet18_Weights.DEFAULT)
 model = nn.Sequential(*list(model.children())[:-1])  # Remove final FC layer
 model = model.to(device)
 model.eval()
+
+# --- SAVE MODEL ---
+# Save weights only (requires rebuilding architecture later)
+weights_path = "resnet18_feature_extractor.pt"
+torch.save(model.state_dict(), "resnet18_feature_extractor.pt")
+print(f"💾 Saved feature extractor weights to '{weights_path}'")
+
+# Save full model (architecture + weights, Streamlit-friendly)
+full_model_path = "resnet18_feature_extractor_full.pt"
+torch.save(model, full_model_path)
+print(f"💾 Saved full feature extractor model to '{full_model_path}'")
 
 # --- FUNCTION: Get feature embedding ---
 def get_embedding(image_path):
