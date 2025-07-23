@@ -12,11 +12,11 @@ from tqdm import tqdm
 from collections import Counter
 
 # --- CONFIG ---
-base_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_64_split"
+base_dir =os.path.expanduser('~/Switzerland/project/Ampli-FIRE/spectrograms_64_split')
 train_dir = os.path.join(base_dir, "train")
 val_dir = os.path.join(base_dir, "val")
 test_dir = os.path.join(base_dir, "test")
-label_file = "/mnt/c/zhaw/Ampli-FIRE/labeled_song_artists_grouped.csv"
+label_file = os.path.expanduser('~/Switzerland/project/Ampli-FIRE/labeled_song_artists_grouped.csv')
 batch_size = 32
 num_epochs = 50  # Increase slightly but let early stopping control
 learning_rate = 0.0003

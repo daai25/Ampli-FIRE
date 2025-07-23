@@ -6,7 +6,7 @@ import os
 
 # --- CONFIG ---
 model_file = "mobilenetv3_genre_classifier_script.pt"
-test_dir = "/mnt/c/zhaw/Ampli-FIRE/spectrograms_64_split/test"
+test_dir = os.path.expanduser('~/Switzerland/project/Ampli-FIRE/spectrograms_64_split/test')
 img_size = 224
 parent_genres = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul",
                  "Jazz", "Classical", "Country & Folk", "Latin", "Metal",
