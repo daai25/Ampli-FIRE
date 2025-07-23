@@ -40,6 +40,10 @@ st.markdown("""
         font-weight: bold;
         margin: 10px 0;
     }
+    /* Make button text black */
+    div.stButton > button {
+        color: black !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -74,4 +78,5 @@ if st.session_state.step < 3:
 
 if st.session_state.show_recommend:
     if st.button("Recommend Again"):
+        st.write("# Recommended Songs: ")
         st.write(recommend_by_genre(initial_genre))
