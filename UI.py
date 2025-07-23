@@ -23,8 +23,8 @@ img_size = 224
 genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
                  "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
                  "World & International", "Blues", "Other"]
-metadata_df = pd.read_csv("spectrogram_metadata.csv")
-metadata_dict = metadata_df.set_index("filename").to_dict(orient="index")
+metadata_df = pd.read_csv("labeled_song_artists_grouped.csv")
+metadata_dict = metadata_df.set_index("Filename").to_dict(orient="index")
 
 def process_one_mp3(file):
     # Step 1: Load the audio
