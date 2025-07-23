@@ -20,7 +20,7 @@ model.fit(X, y)
 
 
 # 4. Recommendation function (based on genre match)
-def recommend_by_genre(genre, n_pool=100, top_n=3):
+def recommend_by_genre(genre, n_pool=100, top_n=4):
 
     # 1. Filter songs by genre
     genre_songs = df[df['genres'] == genre]
