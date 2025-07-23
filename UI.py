@@ -205,9 +205,12 @@ if st.session_state.step < 3:
                 top_indices = similarities.argsort()[::-1][:4]
                 top_files = [valid_paths[i] for i in top_indices]
 
-                st.write("### 🔍 Top 4 Visually Similar Spectrograms (by filename)")
+                st.write("### Songs with Similarity Confidence")
                 for i, path in enumerate(top_files, 1):
-                    st.write(f"{i}. `{os.path.basename(path)}` (Score: {similarities[top_indices[i - 1]]:.4f})")
+                    filename = os.path.basename(path)
+                    song_info = metadata_dict.get(filename, {"song_title": "Unknown", "artist": "Unknown"})
+                    st.write(
+                        f"{i}. **{song_info['song_title']}** by *{song_info['artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
             else:
                 st.warning("⚠️ No embeddings found in dataset for similarity search.")
         if uploaded_file is None:
