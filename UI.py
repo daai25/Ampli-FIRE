@@ -165,7 +165,6 @@ with col2:
 if st.session_state.step < 3:
     if st.button("Next"):
         st.session_state.show_recommend = True
-        st.write("# Recommended Songs: ")
         if uploaded_file is not None:
             # Spectrogram
             spec_path = process_one_mp3(uploaded_file)
@@ -205,7 +204,7 @@ if st.session_state.step < 3:
                 top_indices = similarities.argsort()[::-1][:4]
                 top_files = [valid_paths[i] for i in top_indices]
 
-                st.write("### Songs with Similarity Confidence")
+                st.write("### Here are some other songs you might like:")
                 for i, path in enumerate(top_files, 1):
                     filename = os.path.basename(path)
                     song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
@@ -218,51 +217,51 @@ if st.session_state.step < 3:
 
 if st.session_state.show_recommend:
     if st.button("Recommend Again"):
-        st.write("# Recommended Songs: ")
-        spec_path = process_one_mp3(uploaded_file)
-        predicted_genre, confidence = predict_genre(spec_path)
-        # Set path to spectrogram dataset
-        dataset_dir = "spectrograms_64"  # adjust path if needed
-        image_paths = glob.glob(os.path.join(dataset_dir, "*.png"))
+        if uploaded_file:
+            spec_path = process_one_mp3(uploaded_file)
+            predicted_genre, confidence = predict_genre(spec_path)
+            # Set path to spectrogram dataset
+            dataset_dir = "spectrograms_64"  # adjust path if needed
+            image_paths = glob.glob(os.path.join(dataset_dir, "*.png"))
 
 
-        def get_embedding(img_path):
-            img = Image.open(img_path).convert("RGB")
-            img_tensor = transform(img).unsqueeze(0)
-            with torch.no_grad():
-                embedding = similar_model(img_tensor)
-            return embedding.squeeze().cpu().numpy().flatten()
+            def get_embedding(img_path):
+                img = Image.open(img_path).convert("RGB")
+                img_tensor = transform(img).unsqueeze(0)
+                with torch.no_grad():
+                    embedding = similar_model(img_tensor)
+                return embedding.squeeze().cpu().numpy().flatten()
 
 
-        # Get embedding for the uploaded spectrogram
-        query_embedding = get_embedding(spec_path).reshape(1, -1)
+            # Get embedding for the uploaded spectrogram
+            query_embedding = get_embedding(spec_path).reshape(1, -1)
 
-        # Compute embeddings for the dataset
-        dataset_embeddings = []
-        valid_paths = []
+            # Compute embeddings for the dataset
+            dataset_embeddings = []
+            valid_paths = []
 
-        for path in image_paths:
-            try:
-                emb = get_embedding(path)
-                dataset_embeddings.append(emb)
-                valid_paths.append(path)
-            except Exception:
-                continue  # Skip unreadable images
+            for path in image_paths:
+                try:
+                    emb = get_embedding(path)
+                    dataset_embeddings.append(emb)
+                    valid_paths.append(path)
+                except Exception:
+                    continue  # Skip unreadable images
 
-        # Compute similarity
-        if dataset_embeddings:
-            dataset_embeddings = np.array(dataset_embeddings)
-            similarities = cosine_similarity(query_embedding, dataset_embeddings).flatten()
-            top_indices = similarities.argsort()[::-1][:4]
-            top_files = [valid_paths[i] for i in top_indices]
+            # Compute similarity
+            if dataset_embeddings:
+                dataset_embeddings = np.array(dataset_embeddings)
+                similarities = cosine_similarity(query_embedding, dataset_embeddings).flatten()
+                top_indices = similarities.argsort()[::-1][:4]
+                top_files = [valid_paths[i] for i in top_indices]
 
-            st.write("### Songs with Similarity Confidence")
-            for i, path in enumerate(top_files, 1):
-                filename = os.path.basename(path)
-                song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
-                st.write(
-                    f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
-        else:
-            st.warning("⚠️ No embeddings found in dataset for similarity search.")
-    if uploaded_file is None:
-        st.write(recommend_by_genre(initial_genre))
+                st.write("### Here are some other songs you might like:")
+                for i, path in enumerate(top_files, 1):
+                    filename = os.path.basename(path)
+                    song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
+                    st.write(
+                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
+            else:
+                st.warning("⚠️ No embeddings found in dataset for similarity search.")
+        if uploaded_file is None:
+            st.write(recommend_by_genre(initial_genre))
