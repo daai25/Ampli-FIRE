@@ -73,7 +73,7 @@ def load_genre_model():
 @st.cache_resource
 def load_similar_model():
     similar_model = resnet18()
-    similar_model.load_state_dict(similar_model_file, map_location="cpu")
+    similar_model.load_state_dict(similar_model_file)
     similar_model.eval()
     return similar_model
 
