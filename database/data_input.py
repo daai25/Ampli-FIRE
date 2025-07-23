@@ -18,7 +18,7 @@ DB_CONFIG = {
 }
 
 #insert file_path to the file you want to extract the songs list from
-file_path = "scraping_jamendo\cleaned_music_jamendo.csv"  # or "your_input_file.csv"
+file_path = "labeled_song_artists.csv"  # or "your_input_file.csv"
 
 #extract the objects from the CSV file and put it in a list
 def load_songs_from_csv(csv_path):
@@ -26,7 +26,7 @@ def load_songs_from_csv(csv_path):
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            raw_genres = row.get("genre", "").strip().lower()
+            raw_genres = row.get("Genre", "").strip().lower()
 
             # Normalize genres: if genres is just a string, wrap it in a list
             if ";" in raw_genres:
@@ -37,8 +37,8 @@ def load_songs_from_csv(csv_path):
                 genres = []
 
             songs.append({
-                "song_name": row["song_name"].strip().lower(),
-                "artist_name": row["artist_name"].strip().lower(),
+                "song_name": row["Song Title"].strip().lower(),
+                "artist_name": row["Artist"].strip().lower(),
                 "genres": genres
             })
     return songs
@@ -88,6 +88,7 @@ def insert_songs(songs_data):
             ON CONFLICT DO NOTHING
             RETURNING song_id;
         """, (song_name, artist_name))
+        print(f"Inserted '{song_name}'with the artist '{artist_name}'")
 
         result = cur.fetchone()
         if result:

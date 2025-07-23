@@ -7,11 +7,14 @@ with coll2:
     st.image("Amplifire_logo.png", width=150)
 
 # Configuring Page
-st.set_page_config(page_title="Upload or Enter Text", layout="centered")
+st.set_page_config(page_title="Ampli-FIRE", layout="centered")
 
-st.session_state.step = 1
-
-st.session_state.count = 0
+if 'step' not in st.session_state:
+    st.session_state.step = 1
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+if 'show_recommend' not in st.session_state:
+    st.session_state.show_recommend = False
 
 # Background as black
 st.markdown("""
@@ -61,16 +64,14 @@ with col2:
 
 if st.session_state.step < 3:
     if st.button("Next"):
-        # st.session_state.step += 1
+        st.session_state.show_recommend = True
         st.write("## Thinking...")
         st.write(" This should not take long. ")
-        time.sleep(10)
-        # Have if upload here
-        # We translate the song into a spectrogram
-        # We put it through the Deep Learning Model and the output goes into a genre variable
-        # We put it through Cosine Similarity Model, output goes into variables
-        if uploaded_file is None:
-            rec_songs = recommend_by_genre(initial_genre)
+        time.sleep(5)
         st.write("# Recommended Songs: ")
-        # We display all the variables
-        st.write(rec_songs)
+        if uploaded_file is None:
+            st.write(recommend_by_genre(initial_genre))
+
+if st.session_state.show_recommend:
+    if st.button("Recommend Again"):
+        st.write(recommend_by_genre(initial_genre))
