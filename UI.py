@@ -208,9 +208,9 @@ if st.session_state.step < 3:
                 st.write("### Songs with Similarity Confidence")
                 for i, path in enumerate(top_files, 1):
                     filename = os.path.basename(path)
-                    song_info = metadata_dict.get(filename, {"song_title": "Unknown", "artist": "Unknown"})
+                    song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
                     st.write(
-                        f"{i}. **{song_info['song_title']}** by *{song_info['artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
+                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
             else:
                 st.warning("⚠️ No embeddings found in dataset for similarity search.")
         if uploaded_file is None:
@@ -259,9 +259,9 @@ if st.session_state.show_recommend:
             st.write("### Songs with Similarity Confidence")
             for i, path in enumerate(top_files, 1):
                 filename = os.path.basename(path)
-                song_info = metadata_dict.get(filename, {"song_title": "Unknown", "artist": "Unknown"})
+                song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
                 st.write(
-                    f"{i}. **{song_info['song_title']}** by *{song_info['artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
+                    f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
         else:
             st.warning("⚠️ No embeddings found in dataset for similarity search.")
     if uploaded_file is None:
