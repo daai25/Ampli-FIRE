@@ -1,13 +1,51 @@
 import streamlit as st
-import time
 from genre_rec_model import recommend_by_genre
+from make_spectrogram_for_UI import process_one_mp3
+import torch
+from torchvision import transforms
+from PIL import Image
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Configuring Page
+st.set_page_config(page_title="Ampli-FIRE", layout="centered")
+
+model_file = "mobilenetv3_genre_classifier_script.pt"
+img_size = 224
+genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
+                 "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
+                 "World & International", "Blues", "Other"]
+
+@st.cache_resource
+def load_model():
+    model = torch.jit.load(model_file, map_location="cpu")
+    model.eval()
+    return model
+
+model = load_model()
+
+transform = transforms.Compose([
+    transforms.Resize((img_size, img_size)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5]*3, std=[0.5]*3)
+])
+
+def predict_genre(spectrogram_path):
+    img = Image.open(spectrogram_path).convert("RGB")
+    img_tensor = transform(img).unsqueeze(0)
+    with torch.no_grad():
+        outputs = model(img_tensor)
+        probs = torch.softmax(outputs, dim=1)[0]
+        top_idx = torch.argmax(probs).item()
+        confidence = probs[top_idx].item()
+    return genre_options[top_idx], confidence
+
 
 coll1, coll2, coll3 = st.columns([3, 2, 3])
 with coll2:
     st.image("Amplifire_logo.png", width=150)
-
-# Configuring Page
-st.set_page_config(page_title="Ampli-FIRE", layout="centered")
 
 if 'step' not in st.session_state:
     st.session_state.step = 1
@@ -57,10 +95,6 @@ st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
 # Text boxes
 # Disables text box if user uploads a file.
 
-genre_options = ["Rock", "Pop", "Hip-Hop & Rap", "Electronic", "R&B & Soul", "Jazz", "Classical",
-                 "Country & Folk", "Latin", "Metal", "Punk & Hardcore", "Reggae & Ska",
-                 "World & International", "Blues", "Other"]
-
 song_name = st.text_input("Song Name:", disabled=uploaded_file is not None)
 if song_name:
     st.session_state.count = 1
@@ -71,10 +105,24 @@ with col1:
 with col2:
     initial_genre = st.selectbox("Genre:",genre_options, disabled=uploaded_file is not None)
 
+
+model_file = "mobilenetv3_genre_classifier_script.pt"
+
+
+def load_model():
+    model = torch.jit.load(model_file, map_location="cpu")
+    model.eval()
+    return model
+
+
 if st.session_state.step < 3:
     if st.button("Next"):
         st.session_state.show_recommend = True
         st.write("# Recommended Songs: ")
+        if uploaded_file is not None:
+            # Spectrogram
+            spec = process_one_mp3(uploaded_file)
+            model = load_model()
         if uploaded_file is None:
             st.write(recommend_by_genre(initial_genre))
 
