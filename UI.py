@@ -1,12 +1,13 @@
 import streamlit as st
 import time
+from genre_rec_model import recommend_by_genre
 
 coll1, coll2, coll3 = st.columns([3, 2, 3])
 with coll2:
     st.image("Amplifire_logo.png", width=150)
 
 # Configuring Page
-st.set_page_config(page_title="Upload or Enter Text", layout="centered")
+st.set_page_config(page_title="Ampli-FIRE", layout="centered")
 
 st.session_state.step = 1
 
@@ -64,13 +65,11 @@ if st.session_state.step < 3:
         st.write("## Thinking...")
         st.write(" This should not take long. ")
         time.sleep(10)
+        st.write("# Recommended Songs: ")
         # Have if upload here
         # We translate the song into a spectrogram
         # We put it through the Deep Learning Model and the output goes into a genre variable
         # We put it through Cosine Similarity Model, output goes into variables
-        # Have if text-based here
-        # Put it through Linear Regression "Model"
-        st.write("# Recommended Songs: ")
+        if uploaded_file is None:
+            st.write(recommend_by_genre(initial_genre))
         # We display all the variables
-
-# The Restart Button goes here...maybe
