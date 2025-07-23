@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 
 # 1. Load dataset from CSV
 # Make sure 'songs.csv' has columns: song, artist, genre
-df = pd.read_csv("deduplicated_songs.csv")
+df = pd.read_csv("cleaned_songs.csv")
 
 # 2. Encode genre as numeric
 le = LabelEncoder()
