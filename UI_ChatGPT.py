@@ -36,7 +36,7 @@ transform = transforms.Compose([
 # --- AUDIO TO SPECTROGRAM ---
 def audio_to_spectrogram(audio_file, output_path="temp_spectrogram.png"):
     y, sr = librosa.load(audio_file, sr=None)
-    S = librosa.feature.melspectrogram(y, sr=sr, n_mels=128)
+    S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128)
     S_dB = librosa.power_to_db(S, ref=np.max)
 
     plt.figure(figsize=(5, 5))
