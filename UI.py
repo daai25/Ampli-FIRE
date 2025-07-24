@@ -101,7 +101,7 @@ def predict_genre(spectrogram_path):
 
 coll1, coll2, coll3 = st.columns([3, 2, 3])
 with coll2:
-    st.image("Amplifire_logo.png", width=150)
+    st.image("Amplifire_logo.png", width=150, caption="Amplifire logo.\nA rmspeaker with fire on it.")
 
 if 'step' not in st.session_state:
     st.session_state.step = 1
@@ -143,7 +143,7 @@ st.markdown("""
 
 # Upload section
 st.title("Upload or Enter Text")
-
+st.write("Uploading a file creates a more accurate recommendation and allows you to listen to the recommended songs.")
 uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
 
 st.markdown('<div class="or-divider">OR</div>', unsafe_allow_html=True)
@@ -164,7 +164,8 @@ with col2:
 
 if st.session_state.step < 3:
     if st.button("Next"):
-        st.session_state.show_recommend = True
+        st.write("We are finding Recommendations for you.")
+        st.write("This may take a moment...")
         if uploaded_file is not None:
             # Spectrogram
             spec_path = process_one_mp3(uploaded_file)
@@ -204,19 +205,34 @@ if st.session_state.step < 3:
                 top_indices = similarities.argsort()[::-1][:4]
                 top_files = [valid_paths[i] for i in top_indices]
 
+                st.write(f"### Your song genre was {predicted_genre}.")
                 st.write("### Here are some other songs you might like:")
+                mp3_folder = "music"  # Adjust this if your mp3s are stored elsewhere
+
                 for i, path in enumerate(top_files, 1):
                     filename = os.path.basename(path)
                     song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
                     st.write(
-                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
+                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})"
+                    )
+
+                    # Play the corresponding MP3
+                    mp3_file = os.path.join(mp3_folder, filename.replace("_spectrogram.png", ".mp3"))
+
+                    if os.path.exists(mp3_file):
+                        with open(mp3_file, "rb") as audio_file:
+                            st.audio(audio_file.read(), format="audio/mp3")
+                    else:
+                        st.warning(f"Audio not found for {filename.replace('.png', '')}")
             else:
                 st.warning("⚠️ No embeddings found in dataset for similarity search.")
         if uploaded_file is None:
+            st.session_state.show_recommend = True
             st.write(recommend_by_genre(initial_genre))
 
 if st.session_state.show_recommend:
     if st.button("Recommend Again"):
+        st.write("This may take a moment...")
         if uploaded_file:
             spec_path = process_one_mp3(uploaded_file)
             predicted_genre, confidence = predict_genre(spec_path)
@@ -256,11 +272,23 @@ if st.session_state.show_recommend:
                 top_files = [valid_paths[i] for i in top_indices]
 
                 st.write("### Here are some other songs you might like:")
+                mp3_folder = "music"  # Adjust this if your mp3s are stored elsewhere
+
                 for i, path in enumerate(top_files, 1):
                     filename = os.path.basename(path)
                     song_info = metadata_dict.get(filename, {"Song Title": "Unknown", "Artist": "Unknown"})
                     st.write(
-                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})")
+                        f"{i}. **{song_info['Song Title']}** by *{song_info['Artist']}* (Score: {similarities[top_indices[i - 1]]:.4f})"
+                    )
+
+                    # Play the corresponding MP3
+                    mp3_file = os.path.join(mp3_folder, filename.replace(".png", ".mp3"))
+
+                    if os.path.exists(mp3_file):
+                        with open(mp3_file, "rb") as audio_file:
+                            st.audio(audio_file.read(), format="audio/mp3")
+                    else:
+                        st.warning(f"Audio not found for {filename.replace('.png', '')}")
             else:
                 st.warning("⚠️ No embeddings found in dataset for similarity search.")
         if uploaded_file is None:
