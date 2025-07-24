@@ -144,6 +144,8 @@ Abigail_Christine_Hill_-_Backstabber_spectrogram.png
 - Note: visual similarity ≠ auditory similarity.
 
 ## Conclusions and next steps
+
+
 ### Key Findings
 - The classifier reliably predicts parent genres from spectrograms.
 - The similarity model retrieves visually close examples using embeddings.
@@ -159,4 +161,10 @@ Abigail_Christine_Hill_-_Backstabber_spectrogram.png
 
 ### Deployment Proposal
 - Expose genre classifier as a REST API for tagging tracks.
+
+=======
+- Conclusions of the key findings from the modelling phase
+- Discussion about limitations
+- Proposal for extensions and further work
+- Proposal for the deployment of the generated insights/model
 
