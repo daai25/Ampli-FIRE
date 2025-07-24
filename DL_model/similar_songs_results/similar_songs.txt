@@ -1,0 +1,8 @@
+Query Song:
+Abigail_Christine_Hill_-_Backstabber_spectrogram.png
+
+Top 4 Visually Similar Songs:
+1. Marine_Drive_-_Tuesday_in_Japan_spectrogram.png (Similarity: 0.9810)
+2. Paranoia_-_Anthony_Rubery_spectrogram.png (Similarity: 0.9809)
+3. Amnesia_-_SloUCobra_a.k.a._Umberto_spectrogram.png (Similarity: 0.9788)
+4. LA_Scallywag_-_Hypotenuse_spectrogram.png (Similarity: 0.9785)
