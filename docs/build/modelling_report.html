@@ -228,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Codebase: `genre_classifier_mobilenetv3_fixed.pth`</p>
 <p>Framework: PyTorch (torch==2.x, torchvision==0.15.x)</p>
 <figure>
-<img src="pipeline_diagram_genre_classfication_model.png" alt="pipeline diagram genre classfication model">
+<img src="../pics/pipeline_diagram_genre_classfication_model.png" alt="pipeline diagram genre classfication model">
 <figcaption>Diagram of the genre classification pipline.</figcaption>
 </figure>
 
@@ -254,7 +254,7 @@ ul.task-list li input[type="checkbox"] {
         <li>`collage.png`: Collage of query + similar spectrograms</li>
 </ul>
 <figure>
-<img src="pipeline_diagram_similar_songs_model.png" alt="pipeline diagram similar songs model">
+<img src="../pics/pipeline_diagram_similar_songs_model.png" alt="pipeline diagram similar songs model">
 <figcaption>Diagram of the similar songs model  pipline.</figcaption>
 </figure>
 
@@ -262,7 +262,7 @@ ul.task-list li input[type="checkbox"] {
 <h4>Overview</h4>
 <p>A simple metadata-based recommendation system that suggests songs from the same genre using filtering. Additionally, a placeholder regression model is trained to simulate feature-based extensions.</p>
 <figure>
-<img src="pipeline_diagram_genre_recommendation_model.png" alt="pipeline diagram genre recommendation model"><figcaption>Diagram for the genre recommendation medel pipeline.</figcaption>
+<img src="../pics/pipeline_diagram_genre_recommendation_model.png" alt="pipeline diagram genre recommendation model"><figcaption>Diagram for the genre recommendation medel pipeline.</figcaption>
 </figure>
 <p>Language: Python (`pandas`, `sklearn`)</p>
 <p>Steps:</p>
@@ -284,19 +284,19 @@ def recommend_by_genre(genre, n_pool=100, top_n=3):
 <h3>Genre Classification</h3>
 <img src="../pics/model0.png">
 <h4>Confusion Matrix</h4>
-<img src="confusion_matrix.png">
+<img src="../pics/confusion_matrix.png" width="600" height="600">
 <h4>Training Progress</h4>
 <figure>
-<img src="Training_Validation_Accuracy_over_Epochs.png"><figcaption>Plot of “Training and Validation Accuracy over Epochs”</figcaption>
+<img src="../pics/Training_Validation_Accuracy_over_Epochs.png" width="600" height="600"><figcaption>Plot of “Training and Validation Accuracy over Epochs”</figcaption>
 </figure>
 <figure>
-<img src="Training_Loss_over_Epochs.png"><figcaption>Plot of “Training Loss over Epochs”</figcaption>
+<img src="../pics/Training_Loss_over_Epochs.png" width="600" height="600"><figcaption>Plot of “Training Loss over Epochs”</figcaption>
 </figure>
 <h3>Similarity Search</h3>
 <h4>Example Query Results</h4>
 <img src="../pics/model1.png">
 <h4>Collage</h4>
-<img src="collage.png">
+<img src="../pics/collage.png">
 <h3>Genre-Based Recommender</h3>
 <h4>Sample Output (Genre: Rock)</h4>
 <img src="../pics/model2.png">
